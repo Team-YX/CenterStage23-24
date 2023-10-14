@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.src.swerve.Subsystem;
-
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
-import org.firstinspires.ftc.teamcode.src.v2.maths.PIDcontroller;
-
+import org.firstinspires.ftc.teamcode.src.swerve.maths.PIDcontroller;
 public class MotorGroup {
 
     public final DcMotorEx[] motors;

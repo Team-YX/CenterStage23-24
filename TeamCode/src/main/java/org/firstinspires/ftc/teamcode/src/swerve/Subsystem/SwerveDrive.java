@@ -31,8 +31,8 @@ public class SwerveDrive {
 
 
     public SwerveDrive(Telemetry telemetry, HardwareMap hardwareMap, boolean eff) {
-        mod1m1 = new myDcMotorEx(hardwareMap.get(DcMotorEx.class, "LeftTopMotor"));
-        mod1m2 = new myDcMotorEx(hardwareMap.get(DcMotorEx.class, "LeftBottomMotor"));
+        mod1m1 = new myDcMotorEx(hardwareMap.get(DcMotorEx.class, "leftTopMotor"));
+        mod1m2 = new myDcMotorEx(hardwareMap.get(DcMotorEx.class, "leftBottomMotor"));
         mod2m1 = new myDcMotorEx(hardwareMap.get(DcMotorEx.class, "rightTopMotor"));
         mod2m2 = new myDcMotorEx(hardwareMap.get(DcMotorEx.class, "rightBottomMotor"));
         mod1E = hardwareMap.get(AnalogInput.class, "mod1E");
@@ -62,14 +62,12 @@ public class SwerveDrive {
         //Retrieve the angle and power for each module
         double[] output = swavemath.calculate(y, -x, -rot, heading, true);
         double mod1power = output[0];
-        double mod3power = output[1];
-        double mod2power = output[2];
+        double mod2power = output[1];
 
         //keep previous module heading if joystick not being used
         if (y != 0 || x != 0 || rot != 0) {
-            mod1reference = output[3];
-            //mod3reference = output[5];
-            mod2reference = output[4];
+            mod1reference = output[2];
+            mod2reference = output[3];
         }
 
         //set the zero of each module to be forward
