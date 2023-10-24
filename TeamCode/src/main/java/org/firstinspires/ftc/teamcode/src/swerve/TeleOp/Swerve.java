@@ -57,6 +57,11 @@ public class Swerve extends LinearOpMode {
                 swerve.resetIMU();
             }
 
+            telemetry.addData("power:leftx", gamepad1.left_stick_x);
+            telemetry.addData("power:lefty", gamepad1.left_stick_y);
+            telemetry.addData("power:rightx", gamepad1.right_stick_x);
+            telemetry.update();
+
         }
     }
 }

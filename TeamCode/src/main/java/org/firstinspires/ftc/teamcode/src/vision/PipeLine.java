@@ -23,7 +23,7 @@ public class PipeLine extends OpenCvPipeline {
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
 //    public static Scalar scalarLowerYCrCb = new Scalar(0, 255, 200);
 //    public static Scalar scalarUpperYCrCb = new Scalar(255, 140, 255);
-    public Scalar Green = new Scalar(60, 255, 255);
+    public Scalar Green = new Scalar(255,0,0);
     //PINK RGB 196, 23, 112
 
 
@@ -32,8 +32,8 @@ public class PipeLine extends OpenCvPipeline {
 //    public static Scalar scalarUpperYellow = new Scalar(255.0, 170.0, 120.0);
 
     // Green                                             Y      Cr     Cb
-    public Scalar scalarLowerYCrCb = new Scalar(0, 0, 0);
-    public Scalar scalarUpperYCrCb = new Scalar(255, 120, 120);
+    public Scalar scalarLowerYCrCb = new Scalar(0, 0, 100);
+    public Scalar scalarUpperYCrCb = new Scalar(100, 100, 255);
 
     // Use this picture for you own color https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022/blob/main/YCbCr.jpeg
     // Note that the Cr and Cb values range between 0-255. this means that the origin of the coordinate system is (128,128)

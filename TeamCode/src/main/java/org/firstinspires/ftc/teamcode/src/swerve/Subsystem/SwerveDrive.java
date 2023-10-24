@@ -18,7 +18,7 @@ public class SwerveDrive {
     final private AnalogInput mod1E, mod2E;
     final private Telemetry telemetry;
     final private boolean eff;
-    private double module1Adjust = -10, module2Adjust = -10;// module3Adjust = -45;
+    private double module1Adjust = 0, module2Adjust = 0;// module3Adjust = -45;
     private final PIDcontroller mod1PID = new PIDcontroller(0.1, 0.002, 3, 1, 0.5);
     private final PIDcontroller mod2PID = new PIDcontroller(0.1, 0.002, 2, 0.5, 0.5);
     private final swerveKinematics swavemath = new swerveKinematics();
@@ -53,8 +53,8 @@ public class SwerveDrive {
     public void drive(double x, double y, double rot) {
 
         //Turn our MA3 absolute encoder signals from volts to degrees
-        double mod1P = mod1E.getVoltage() * 74.16;
-        double mod2P = mod2E.getVoltage() * 74.16;
+        double mod1P = mod1E.getVoltage() * 72;
+        double mod2P = mod2E.getVoltage() * 72;
 
         //Update heading of robot
         heading = imu.getHeadingInDegrees();
@@ -80,7 +80,6 @@ public class SwerveDrive {
 
         mod1reference = mathsOperations.angleWrap(mod1reference);
         mod2reference = mathsOperations.angleWrap(mod2reference);
-        //mod3reference = mathsOperations.angleWrap(mod3reference);
 
         //Make sure that a module never turns more than 90 degrees
         double[] mod1efvalues = mathsOperations.efficientTurn(mod1reference, mod1P, mod1power);
@@ -106,10 +105,19 @@ public class SwerveDrive {
 
         telemetry.addData("mod1reference", mod1reference);
         telemetry.addData("mod2reference", mod2reference);
-        //telemetry.addData("mod3reference", mod3reference);
 
         telemetry.addData("mod1P", mod1P);
         telemetry.addData("mod2P", mod2P);
+
+        telemetry.addData("mod1m1", mod1m1.getCurrentPosition());
+        telemetry.addData("mod1m2", mod1m2.getCurrentPosition());
+        telemetry.addData("mod2m1", mod2m1.getCurrentPosition());
+        telemetry.addData("mod2m2", mod2m2.getCurrentPosition());
+
+        telemetry.addData("Mod1E", mod1E.getVoltage());
+
+        telemetry.addData("imu", imu.getHeadingInDegrees());
+
     }
 
     public void rotateKids(double angle) {
@@ -133,6 +141,9 @@ public class SwerveDrive {
     }
 
     public double getHeading() {
-        return imu.getHeadingInDegrees();
+        double imu1 = imu.getHeadingInDegrees();
+        return imu1;
     }
+
+
 }
