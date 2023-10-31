@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.src.swerve.TeleOp;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.src.swerve.Subsystem.SwerveDrive;
 import org.firstinspires.ftc.teamcode.src.swerve.maths.PIDcontroller;
 
-
+@Disabled
 @Config
 @TeleOp(name = "swerveTuner", group = "Linear Opmode")
 public class swerveTuner extends LinearOpMode {

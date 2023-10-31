@@ -18,7 +18,7 @@ public class SwerveDrive {
     final private AnalogInput mod1E, mod2E;
     final private Telemetry telemetry;
     final private boolean eff;
-    private double module1Adjust = 0, module2Adjust = 0;// module3Adjust = -45;
+    private double module1Adjust = 23, module2Adjust = 40;// module3Adjust = -45;
     private final PIDcontroller mod1PID = new PIDcontroller(0.1, 0.002, 3, 1, 0.5);
     private final PIDcontroller mod2PID = new PIDcontroller(0.1, 0.002, 2, 0.5, 0.5);
     private final swerveKinematics swavemath = new swerveKinematics();
@@ -27,7 +27,7 @@ public class SwerveDrive {
     double mod2reference = 0;
     //double mod3reference = 0;
     double heading;
-    double imuOffset = 0;
+    double imuOffset = 0.0625;
 
 
     public SwerveDrive(Telemetry telemetry, HardwareMap hardwareMap, boolean eff) {
@@ -44,6 +44,7 @@ public class SwerveDrive {
         mod2m2.setPowerThresholds(0.05, 0);
 
         imu = new IMU(hardwareMap);
+
 
 
         this.telemetry = telemetry;
