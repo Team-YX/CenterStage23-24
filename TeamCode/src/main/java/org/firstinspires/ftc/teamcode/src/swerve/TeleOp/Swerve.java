@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.src.swerve.TeleOp;
 
 //Import EVERYTHING we need
 //import com.acmerobotics.dashboard.config.Config;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+//import com.outoftheboxrobotics.photoncore.PhotonCore;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -13,7 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.src.swerve.Subsystem.SwerveDrive;
 import org.firstinspires.ftc.teamcode.src.swerve.maths.PIDcontroller;
-@Disabled
+
+
 @TeleOp(name = "Swerve")
 public class Swerve extends LinearOpMode {
 
@@ -41,7 +42,7 @@ public class Swerve extends LinearOpMode {
 
         //Fast loop go brrr- DO NOT DELETE
         //PhotonCore.enable();
-        PhotonCore.experimental.setMaximumParallelCommands(8);
+        //PhotonCore.experimental.setMaximumParallelCommands(8);
 
         waitForStart();
         while (opModeIsActive()) {

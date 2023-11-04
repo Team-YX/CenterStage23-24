@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.src.swerve.Utility.myDcMotorEx;
 
-@Disabled
+
 @TeleOp
 public class moduleOffsetTuner extends LinearOpMode {
     public void runOpMode() {
@@ -33,8 +33,25 @@ public class moduleOffsetTuner extends LinearOpMode {
             mod1m1.setPower(0.1 * gamepad1.left_stick_y);
             mod2m1.setPower(0.1 * gamepad1.right_stick_y);
 
+            if(gamepad1.a){
+                module1Adjust ++;
+            }
+            if(gamepad1.b){
+                module1Adjust --;
+            }
+            if(gamepad1.y){
+                module2Adjust ++;
+            }
+            if(gamepad1.x){
+                module2Adjust --;
+            }
+
+
             telemetry.addData("mod1P:", mod1P);
             telemetry.addData("mod2P:", mod2P);
+
+            telemetry.addData("module1Adjust", module1Adjust);
+            telemetry.addData("module2adjust", module2Adjust);
 
             telemetry.update();
         }

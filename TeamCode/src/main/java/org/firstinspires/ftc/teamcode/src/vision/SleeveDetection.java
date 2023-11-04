@@ -30,10 +30,7 @@ public class SleeveDetection extends OpenCvPipeline {
 
     // Color definitions
     private final Scalar
-            YELLOW = new Scalar(255, 255, 0),
-            CYAN = new Scalar(0, 255, 255),
-            MAGENTA = new Scalar(255, 0, 255);
-
+            RED = new Scalar(255, 0, 0);
     // Anchor point definitions
     Point sleeve_pointA = new Point(
             SLEEVE_TOPLEFT_ANCHOR_POINT.x,
@@ -61,7 +58,7 @@ public class SleeveDetection extends OpenCvPipeline {
                     input,
                     sleeve_pointA,
                     sleeve_pointB,
-                    CYAN,
+                    RED,
                     2
             );
         } else if (sumColors.val[1] == minColor) {
@@ -70,7 +67,7 @@ public class SleeveDetection extends OpenCvPipeline {
                     input,
                     sleeve_pointA,
                     sleeve_pointB,
-                    MAGENTA,
+                    RED,
                     2
             );
         } else {
@@ -79,7 +76,7 @@ public class SleeveDetection extends OpenCvPipeline {
                     input,
                     sleeve_pointA,
                     sleeve_pointB,
-                    YELLOW,
+                    RED,
                     2
             );
         }

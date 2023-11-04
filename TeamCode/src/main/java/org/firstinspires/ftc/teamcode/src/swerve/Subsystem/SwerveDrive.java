@@ -19,8 +19,8 @@ public class SwerveDrive {
     final private Telemetry telemetry;
     final private boolean eff;
     private double module1Adjust = 23, module2Adjust = 40;// module3Adjust = -45;
-    private final PIDcontroller mod1PID = new PIDcontroller(0.1, 0.002, 3, 1, 0.5);
-    private final PIDcontroller mod2PID = new PIDcontroller(0.1, 0.002, 2, 0.5, 0.5);
+    private final PIDcontroller mod1PID = new PIDcontroller(0, 0, 0, 0, 0); //0.1, 0.002, 3, 1, 0.5
+    private final PIDcontroller mod2PID = new PIDcontroller(0, 0, 0, 0, 0.0); //0.1, 0.002, 2, 0.5, 0.5
     private final swerveKinematics swavemath = new swerveKinematics();
 
     double mod1reference = 0;
@@ -96,11 +96,11 @@ public class SwerveDrive {
         }
 
         //change coax values into diffy values from pid and power
-        double[] mod1values = mathsOperations.diffyConvert(mod1PID.pidOut(AngleUnit.normalizeDegrees(mod1reference - mod1P)), -mod1power);
+        double[] mod1values = mathsOperations.diffyConvert(mod1PID.pidOut(AngleUnit.normalizeDegrees(mod1reference - mod1P)), mod1power);
         mod1m1.setPower(mod1values[0]);
-        mod1m2.setPower(mod1values[1]);
-        double[] mod2values = mathsOperations.diffyConvert(-mod2PID.pidOut(AngleUnit.normalizeDegrees(mod2reference - mod2P)), mod2power);
-        mod2m1.setPower(mod2values[0]);
+        mod1m2.setPower(-mod1values[1]);
+        double[] mod2values = mathsOperations.diffyConvert(mod2PID.pidOut(AngleUnit.normalizeDegrees(mod2reference - mod2P)), mod2power);
+        mod2m1.setPower(-mod2values[0]);
         mod2m2.setPower(mod2values[1]);
 
 
