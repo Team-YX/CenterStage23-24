@@ -82,7 +82,22 @@ public class Vision_Test_RED extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(webcam, 10);
 
         telemetry.update();
-        waitForStart();
+
+        while (!isStarted() && !isStopRequested()) {
+
+            if (myPipeline.getRectMidpointX() < 110) {
+                AUTONOMOUS_C();
+            } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
+                AUTONOMOUS_B();
+            } else if (myPipeline.getRectMidpointX() > 200) {
+                AUTONOMOUS_A();
+            }
+            telemetry.addData("RectArea: ", myPipeline.getRectArea());
+            telemetry.addData("X", myPipeline.getRectX());
+            telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
+            telemetry.addData("MidPoint", myPipeline.getRectHeight());
+            telemetry.update();
+        }
 
         while (opModeIsActive()) {
             myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);

@@ -1,12 +1,17 @@
-package org.firstinspires.ftc.teamcode.src.vision;
+package org.firstinspires.ftc.teamcode.src.Autonomous;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.src.vision.PipeLine_RED;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
@@ -15,14 +20,13 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-//Disable if not using FTC Dashboard https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022#opencv_freightfrenzy_2021-2022
-@Autonomous(name = "Vision_Test_BLUE", group = "TEST")
+@Autonomous(name = "RED_RUNNER", group = "COMPETITION")
 
-public class Vision_Test_BLUE extends LinearOpMode {
+public class RED_RUNNER extends LinearOpMode {
     private OpenCvCamera webcam;
 
-    private static final int CAMERA_WIDTH = 160; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 90; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 180; // height of wanted camera resolution
 
     private double CrLowerUpdate = 160;
     private double CbLowerUpdate = 100;
@@ -37,19 +41,14 @@ public class Vision_Test_BLUE extends LinearOpMode {
     private double lowerruntime = 0;
     private double upperruntime = 0;
 
-    // BLue Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(0, 60, 150);
-    public static Scalar scalarUpperYCrCb = new Scalar(255, 150, 255);
+    // RED Range                                      Y      Cr     Cb
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     static final Rect Left = new Rect(
             new Point(60, 35), new Point(120, 75));
     static final Rect Right = new Rect(
             new Point(140, 35), new Point(200, 75));
-
-
-    // Yellow Range
-//    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
-//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
 
     @Override
     public void runOpMode() {
@@ -57,11 +56,12 @@ public class Vision_Test_BLUE extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         //OpenCV Pipeline
-        PipeLine_BLUE myPipeline;
-        webcam.setPipeline(myPipeline = new PipeLine_BLUE(borderLeftX, borderRightX, borderTopY, borderBottomY));
+        PipeLine_RED myPipeline;
+        webcam.setPipeline(myPipeline = new PipeLine_RED(borderLeftX, borderRightX, borderTopY, borderBottomY));
         // Configuration of Pipeline
         myPipeline.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
         myPipeline.configureScalarUpper(scalarUpperYCrCb.val[0], scalarUpperYCrCb.val[1], scalarUpperYCrCb.val[2]);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         // Webcam Streaming
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -82,15 +82,32 @@ public class Vision_Test_BLUE extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(webcam, 10);
 
         telemetry.update();
-        waitForStart();
+
+        while (!isStarted() && !isStopRequested()) {
+
+            if (myPipeline.getRectArea() > 1100) {
+                if (myPipeline.getRectMidpointX() < 110) {
+                    AUTONOMOUS_C();
+                } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
+                    AUTONOMOUS_B();
+                } else if (myPipeline.getRectMidpointX() > 200) {
+                    AUTONOMOUS_A();
+                }
+                telemetry.addData("RectArea: ", myPipeline.getRectArea());
+                telemetry.addData("X", myPipeline.getRectX());
+                telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
+                telemetry.addData("MidPoint", myPipeline.getRectHeight());
+                telemetry.update();
+            } else telemetry.addLine("NOTHING FOUND");
+            telemetry.update();
+        }
+
 
         while (opModeIsActive()) {
             myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
             if (myPipeline.error) {
                 telemetry.addData("Exception: ", myPipeline.debug);
             }
-            // Only use this line of the code when you want to find the lower and upper values
-//            testing(PipeLine);
 
             telemetry.addData("RectArea: ", myPipeline.getRectArea());
             telemetry.addData("X", myPipeline.getRectX());
@@ -99,9 +116,13 @@ public class Vision_Test_BLUE extends LinearOpMode {
 
             telemetry.update();
 
-            if (myPipeline.getRectArea() > 2000) {
-                if (myPipeline.getRectMidpointX() < 100) {
-                    AUTONOMOUS_C();
+            if (myPipeline.getRectArea() > 1100) {
+                if (myPipeline.getRectMidpointX() < 110) {
+                    TrajectorySequence To_Junction = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
+                            .lineToConstantHeading(new Vector2d(62, 0))
+                            .back(10)
+                            .build();
+                    drive.followTrajectorySequence(To_Junction);
                 } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
                     AUTONOMOUS_B();
                 } else if (myPipeline.getRectMidpointX() > 200) {
@@ -111,55 +132,18 @@ public class Vision_Test_BLUE extends LinearOpMode {
         }
     }
 
-    public void testing(PipeLine_BLUE myPipeline) {
-        if (lowerruntime + 0.05 < getRuntime()) {
-            CrLowerUpdate += -gamepad1.left_stick_y;
-            CbLowerUpdate += gamepad1.left_stick_x;
-            lowerruntime = getRuntime();
-        }
-        if (upperruntime + 0.05 < getRuntime()) {
-            CrUpperUpdate += -gamepad1.right_stick_y;
-            CbUpperUpdate += gamepad1.right_stick_x;
-            upperruntime = getRuntime();
-        }
-
-        CrLowerUpdate = inValues(CrLowerUpdate, 0, 255);
-        CrUpperUpdate = inValues(CrUpperUpdate, 0, 255);
-        CbLowerUpdate = inValues(CbLowerUpdate, 0, 255);
-        CbUpperUpdate = inValues(CbUpperUpdate, 0, 255);
-
-        myPipeline.configureScalarLower(0.0, CrLowerUpdate, CbLowerUpdate);
-        myPipeline.configureScalarUpper(255.0, CrUpperUpdate, CbUpperUpdate);
-
-        telemetry.addData("lowerCr ", (int) CrLowerUpdate);
-        telemetry.addData("lowerCb ", (int) CbLowerUpdate);
-        telemetry.addData("UpperCr ", (int) CrUpperUpdate);
-        telemetry.addData("UpperCb ", (int) CbUpperUpdate);
-        telemetry.addData("X", myPipeline.getRectX());
-        telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
-        telemetry.addData("MidPoint", myPipeline.getRectHeight());
-
-    }
-
-    public Double inValues(double value, double min, double max) {
-        if (value < min) {
-            value = min;
-        }
-        if (value > max) {
-            value = max;
-        }
-        return value;
-    }
-
     public void AUTONOMOUS_A() {
         telemetry.addLine("RIGHT");
+        telemetry.update();
     }
 
     public void AUTONOMOUS_B() {
         telemetry.addLine("CENTER");
+        telemetry.update();
     }
 
     public void AUTONOMOUS_C() {
         telemetry.addLine("LEFT");
+        telemetry.update();
     }
 }

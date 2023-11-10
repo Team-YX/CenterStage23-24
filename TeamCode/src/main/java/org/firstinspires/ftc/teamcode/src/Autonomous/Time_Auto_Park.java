@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.src.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-
+@Disabled
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "MEET1_AUTO_TIME_Park", group = "Competition")
 public class Time_Auto_Park extends LinearOpMode {
 

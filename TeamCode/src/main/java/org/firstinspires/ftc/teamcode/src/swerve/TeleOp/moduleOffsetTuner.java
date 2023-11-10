@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.src.swerve.Utility.myDcMotorEx;
 
-
+@Disabled
 @TeleOp
 public class moduleOffsetTuner extends LinearOpMode {
     public void runOpMode() {

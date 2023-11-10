@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.src.swerve.Subsystem.SwerveDrive;
 import org.firstinspires.ftc.teamcode.src.swerve.maths.PIDcontroller;
 
-
+@Disabled
 @Config
 @TeleOp(name = "swerveTuner", group = "Linear Opmode")
 public class swerveTuner extends LinearOpMode {
