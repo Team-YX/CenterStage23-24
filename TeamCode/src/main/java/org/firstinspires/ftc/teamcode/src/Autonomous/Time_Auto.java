@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Disabled
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "MEET1_AUTO_TIME", group = "Competition")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "AUTO_TIME", group = "Competition")
 public class Time_Auto extends LinearOpMode {
 
     DcMotor front_right;

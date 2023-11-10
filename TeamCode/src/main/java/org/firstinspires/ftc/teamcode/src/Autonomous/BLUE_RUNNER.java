@@ -7,7 +7,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
@@ -30,10 +29,10 @@ public class BLUE_RUNNER extends LinearOpMode {
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 180; // height of wanted camera resolution
 
-    private double CrLowerUpdate = 160;
-    private double CbLowerUpdate = 100;
-    private double CrUpperUpdate = 255;
-    private double CbUpperUpdate = 255;
+    private final double CrLowerUpdate = 160;
+    private final double CbLowerUpdate = 100;
+    private final double CrUpperUpdate = 255;
+    private final double CbUpperUpdate = 255;
 
     public static double borderLeftX = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX = 0.0;   //fraction of pixels from the right of the cam to skip
@@ -51,11 +50,6 @@ public class BLUE_RUNNER extends LinearOpMode {
             new Point(60, 35), new Point(120, 75));
     static final Rect Right = new Rect(
             new Point(140, 35), new Point(200, 75));
-
-
-    // Yellow Range
-//    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
-//    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
 
     @Override
     public void runOpMode() {

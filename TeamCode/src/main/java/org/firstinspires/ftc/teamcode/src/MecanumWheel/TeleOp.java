@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "MEET1_TElEOP", group = "Competition")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "MEET1_TElEOP", group = "COMPETITION")
 public class TeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

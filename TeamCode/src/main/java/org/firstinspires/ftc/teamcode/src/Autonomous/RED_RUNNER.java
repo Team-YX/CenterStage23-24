@@ -28,10 +28,10 @@ public class RED_RUNNER extends LinearOpMode {
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 180; // height of wanted camera resolution
 
-    private double CrLowerUpdate = 160;
-    private double CbLowerUpdate = 100;
-    private double CrUpperUpdate = 255;
-    private double CbUpperUpdate = 255;
+    private final double CrLowerUpdate = 160;
+    private final double CbLowerUpdate = 100;
+    private final double CrUpperUpdate = 255;
+    private final double CbUpperUpdate = 255;
 
     public static double borderLeftX = 0.0;   //fraction of pixels from the left side of the cam to skip
     public static double borderRightX = 0.0;   //fraction of pixels from the right of the cam to skip
