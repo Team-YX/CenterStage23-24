@@ -11,25 +11,27 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "MEET1_TElEOP", group = "COMPETITION")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TElEOP", group = "COMPETITION")
 public class TeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
         ColorSensor csensor = hardwareMap.get(ColorSensor.class, "csensor");
-        DistanceSensor dsensor = hardwareMap.get(DistanceSensor.class, "dsensor");
+        DistanceSensor dsensor2 = hardwareMap.get(DistanceSensor.class, "dsensor2");
+        DistanceSensor dsensor1 = hardwareMap.get(DistanceSensor.class, "dsensor1");
         DcMotor front_right = hardwareMap.get(DcMotor.class, "FR");
         DcMotor front_left = hardwareMap.get(DcMotor.class, "FL");
         DcMotor back_left = hardwareMap.get(DcMotor.class, "BL");
         DcMotor back_right = hardwareMap.get(DcMotor.class, "BR");
         DcMotor linearSlide_right = hardwareMap.get(DcMotor.class, "RL");
         DcMotor linearSlide_left = hardwareMap.get(DcMotor.class, "LL");
-        DcMotor IN_N_OUT = hardwareMap.get(DcMotor.class, "IN N OUT");
+        DcMotor IN_N_OUT = hardwareMap.get(DcMotor.class, "IN_N_OUT");
 
         front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.FORWARD);
         back_left.setDirection(DcMotorSimple.Direction.FORWARD);
         back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+
         linearSlide_right.setDirection(DcMotorSimple.Direction.REVERSE);
         linearSlide_left.setDirection(DcMotorSimple.Direction.FORWARD);
 
@@ -53,8 +55,9 @@ public class TeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-
-            if (dsensor.getDistance(DistanceUnit.INCH) <= 4) {
+            // Distance Sensor Speed Adjuster
+            if (dsensor1.getDistance(DistanceUnit.INCH) <= 4 ||
+                    dsensor2.getDistance(DistanceUnit.INCH) <= 4) {
                 Speed = 0.15;
             }
 
@@ -63,7 +66,6 @@ public class TeleOp extends LinearOpMode {
             back_right.setPower(Speed * (gamepad1.right_stick_x + +gamepad1.left_stick_y + -gamepad1.left_stick_x));
             front_right.setPower(Speed * 1 * (gamepad1.right_stick_x + (+gamepad1.left_stick_y - -gamepad1.left_stick_x)));
             front_left.setPower(Speed * 1 * (-gamepad1.right_stick_x + +gamepad1.left_stick_y + -gamepad1.left_stick_x));
-
 
             //Robot Control
             if (!gamepad1.a) {
@@ -77,7 +79,7 @@ public class TeleOp extends LinearOpMode {
                 }
                 aDepressed = false;
             }
-
+            // Speed Control
             if (gamepad1.y) {
                 Speed = 1;
             } else Speed = 0.6 + gamepad1.right_trigger / 2;
@@ -90,10 +92,11 @@ public class TeleOp extends LinearOpMode {
             } else {
                 IN_N_OUT.setPower(0);
             }
+            //LinearSlide Control
             linearSlide_left.setPower(gamepad2.left_stick_y);
             linearSlide_right.setPower(gamepad2.left_stick_y);
 
-
+            // Telemetry Data
             telemetry.addData("RUN", getRuntime());
             telemetry.addData("FR_Power", front_right.getPower());
             telemetry.addData("FLPower", front_left.getPower());
@@ -101,7 +104,8 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("BL_Power", back_left.getPower());
             telemetry.addData("SLide", linearSlide_left.getPower());
             telemetry.addData("IN_N_OUT", IN_N_OUT.getPower());
-            telemetry.addData("Distance", dsensor.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Distance1", dsensor1.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Distance2", dsensor2.getDistance(DistanceUnit.INCH));
             telemetry.addData("Speed", Speed);
             telemetry.update();
         }
