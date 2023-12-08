@@ -6,22 +6,24 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.src.MecanumWheel.GenericOpmoodeTemplate;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.src.vision.PipeLine_RED;
+import org.firstinspires.ftc.teamcode.src.vision.PipeLine_BLUE;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name = "RED_RUNNER", group = "COMPETITION")
+@Autonomous(name = "✝️\uD83D\uDFE6 Blue_Right(5 Stack) \uD83D\uDFE6✝️", group = "COMPETITION")
 
-public class RED_RUNNER extends LinearOpMode {
+public class Blue_Right extends GenericOpmoodeTemplate {
     private OpenCvCamera webcam;
+    int lcr;
+    boolean Go;
 
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 180; // height of wanted camera resolution
@@ -32,18 +34,20 @@ public class RED_RUNNER extends LinearOpMode {
     public static double borderBottomY = 0.0;   //fraction of pixels from the bottom of the cam to skip
 
     // RED Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 60, 150);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     @Override
     public void runOpMode() {
+        defaultInit();
+
         // OpenCV webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         //OpenCV Pipeline
-        PipeLine_RED myPipeline;
-        webcam.setPipeline(myPipeline = new PipeLine_RED(borderLeftX, borderRightX, borderTopY, borderBottomY));
+        PipeLine_BLUE myPipeline;
+        webcam.setPipeline(myPipeline = new PipeLine_BLUE(borderLeftX, borderRightX, borderTopY, borderBottomY));
 
         // Configuration of Pipeline
         myPipeline.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
@@ -74,60 +78,65 @@ public class RED_RUNNER extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested()) {
 
-            if (myPipeline.getRectArea() > 1100) {
-                if (myPipeline.getRectMidpointX() < 110) {
-                    AUTONOMOUS_C();
-                } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
-                    AUTONOMOUS_B();
-                } else if (myPipeline.getRectMidpointX() > 200) {
-                    AUTONOMOUS_A();
-                }
-                telemetry.addData("RectArea: ", myPipeline.getRectArea());
-                telemetry.addData("X", myPipeline.getRectX());
-                telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
-                telemetry.addData("MidPoint", myPipeline.getRectHeight());
-                telemetry.update();
-            } else telemetry.addLine("NOTHING FOUND");
+            Launcher.setPower(1);
+            Intake1.setPosition(0.3);
+            Intake2.setPosition(0.3);
+
+            if (myPipeline.getRectMidpointX() > 200 && myPipeline.getRectArea() > 1000) {
+                telemetry.addLine("RIGHT");
+                telemetry.addLine("");
+                lcr = 1;
+                Go = true;
+            } else if (myPipeline.getRectMidpointX() > 110 && myPipeline.getRectMidpointX() < 200 && myPipeline.getRectArea() > 1000) {
+                telemetry.addLine("CENTER");
+                telemetry.addLine("");
+                lcr = 2;
+                Go = true;
+            } else if (myPipeline.getRectMidpointX() < 110 && myPipeline.getRectArea() > 1000) {
+                telemetry.addLine("LEFT");
+                telemetry.addLine("");
+                lcr = 3;
+                Go = true;
+            } else {
+                telemetry.addLine("No prop found, please readjust the camera position");
+                telemetry.addLine("");
+                Go = false;
+            }
+            telemetry.addData("RectArea: ", myPipeline.getRectArea());
+            telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
+            telemetry.addData("lcr", lcr);
+            telemetry.addData("Status", Go);
             telemetry.update();
         }
 
 
-        while (opModeIsActive()) {
-            myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+        myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
 
-            if (myPipeline.getRectArea() > 1100) {
-                if (myPipeline.getRectMidpointX() < 110) {
-                    TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                            .lineToConstantHeading(new Vector2d(20, 5))
-                            .build();
-                    drive.followTrajectorySequence(To_Marker);
-                } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
-                    TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                            .lineToConstantHeading(new Vector2d(20, 0))
-                            .build();
-                    drive.followTrajectorySequence(To_Marker);
-                } else if (myPipeline.getRectMidpointX() > 200) {
-                    TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                            .lineToConstantHeading(new Vector2d(20, -5))
-                            .build();
-                    drive.followTrajectorySequence(To_Marker);
-                }
+        if (Go) {
+            Launcher.setPower(1);
+            Intake1.setPosition(0.3);
+            Intake2.setPosition(0.3);
+            //RIGHT
+            if (lcr == 1) {
+                TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
+                        .lineToConstantHeading(new Vector2d(25, -11))
+                        .back(10)
+                        .build();
+                drive.followTrajectorySequence(To_Marker);
+                //CENTER
+            } else if (lcr == 2) {
+                TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
+                        .lineToConstantHeading(new Vector2d(32, 0))
+                        .build();
+                drive.followTrajectorySequence(To_Marker);
+                //LEFT
+            } else if (lcr == 3) {
+                TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
+                        .splineTo(new Vector2d(33, 5), Math.toRadians(90))
+                        .back(7)
+                        .build();
+                drive.followTrajectorySequence(To_Marker);
             }
         }
-    }
-
-    public void AUTONOMOUS_A() {
-        telemetry.addLine("RIGHT");
-        telemetry.update();
-    }
-
-    public void AUTONOMOUS_B() {
-        telemetry.addLine("CENTER");
-        telemetry.update();
-    }
-
-    public void AUTONOMOUS_C() {
-        telemetry.addLine("LEFT");
-        telemetry.update();
     }
 }
