@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name = "✝️\uD83D\uDFE5 Red_Right (Backboard) \uD83D\uDFE5✝️", group = "COMPETITION")
+@Autonomous(name = "✝\uD83D\uDFE5 Red_Right (Backboard) \uD83D\uDFE5✝", group = "COMPETITION")
 
 public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
     private OpenCvCamera webcam;
@@ -119,10 +119,12 @@ public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
                 //RIGHT
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .lineToConstantHeading(new Vector2d(25, -11))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(29, -37, Math.toRadians(273)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .forward(1.5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
@@ -137,6 +139,7 @@ public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
                         })
                         .back(10)
                         .lineToLinearHeading(new Pose2d(3, -30, Math.toRadians(273)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .forward(15)
                         .build();
 
@@ -151,10 +154,12 @@ public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
             } else if (lcr == 2) {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .lineToConstantHeading(new Vector2d(33, 0))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(34, -37, Math.toRadians(273)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .forward(1.5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
@@ -169,6 +174,7 @@ public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
                         })
                         .back(10)
                         .lineToLinearHeading(new Pose2d(3, -30, Math.toRadians(273)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .forward(15)
                         .build();
 
@@ -181,9 +187,11 @@ public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
             } else if (lcr == 3) {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .splineTo(new Vector2d(33, 5), Math.toRadians(90))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(38, -37, Math.toRadians(273)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .forward(1.5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
@@ -198,6 +206,7 @@ public class Red_Right_BackBoard extends GenericOpmoodeTemplate {
                         })
                         .back(10)
                         .lineToLinearHeading(new Pose2d(3, -30, Math.toRadians(273)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .forward(15)
                         .build();
 

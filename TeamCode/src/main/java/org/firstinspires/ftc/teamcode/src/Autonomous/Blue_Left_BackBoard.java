@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name = "✝️\uD83D\uDFE6 Blue_Left(BackBoard) \uD83D\uDFE6✝️", group = "COMPETITION")
+@Autonomous(name = "✝\uD83D\uDFE6 Blue_Left(BackBoard) \uD83D\uDFE6✝", group = "COMPETITION")
 
 public class Blue_Left_BackBoard extends GenericOpmoodeTemplate {
     private OpenCvCamera webcam;
@@ -98,7 +98,7 @@ public class Blue_Left_BackBoard extends GenericOpmoodeTemplate {
                 lcr = 3;
                 Go = true;
             } else {
-                telemetry.addLine("No prop found, please readjust the camera position");
+                telemetry.addLine("No marker found, please readjust the camera position");
                 telemetry.addLine("");
                 Go = false;
             }
@@ -125,20 +125,29 @@ public class Blue_Left_BackBoard extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(36, 38.5, Math.toRadians(93)))
-                        .forward(2)
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35,35,11.03))
+                        .forward(1.5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-1);
+                            linearSlide_right.setPower(-1);
+                        })
+                        .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0.9);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(1.5)
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0);
+                            linearSlide_right.setPower(0);
+                        })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
                         .back(15)
-                        .lineToLinearHeading(new Pose2d(5, 32, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(5, 32, Math.toRadians(87)))
                         .forward(15)
                         .build();
                 drive.followTrajectorySequence(To_Marker);
@@ -150,24 +159,35 @@ public class Blue_Left_BackBoard extends GenericOpmoodeTemplate {
             } else if (lcr == 2) {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .lineToConstantHeading(new Vector2d(33, 0))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(33, 38.5, Math.toRadians(93)))
-                        .forward(2)
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
+                        .forward(1.5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-1);
+                            linearSlide_right.setPower(-1);
+                        })
+                        .waitSeconds(1)
+                        .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0.9);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(1.5)
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0);
+                            linearSlide_right.setPower(0);
+                        })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
                         .back(15)
-                        .lineToLinearHeading(new Pose2d(5, 32, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(5, 32, Math.toRadians(87)))
                         .forward(15)
                         .build();
                 drive.followTrajectorySequence(To_Marker);
@@ -182,20 +202,29 @@ public class Blue_Left_BackBoard extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(28, 38.5, Math.toRadians(93)))
-                        .forward(2)
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 10.79))
+                        .forward(1.5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-1);
+                            linearSlide_right.setPower(-1);
+                        })
+                        .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0.9);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(1.5)
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0);
+                            linearSlide_right.setPower(0);
+                        })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
                         .back(15)
-                        .lineToLinearHeading(new Pose2d(5, 32, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(5, 32, Math.toRadians(87)))
                         .forward(15)
                         .build();
                 drive.followTrajectorySequence(To_Marker);

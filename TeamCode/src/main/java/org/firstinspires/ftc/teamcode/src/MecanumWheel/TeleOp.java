@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "TELEOP", group = "COMPETITION")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "✝TELEOP✝", group = "COMPETITION")
 public class TeleOp extends GenericOpmoodeTemplate {
     public static String getStackTraceAsString(Throwable e) {
         StringWriter sw = new StringWriter();
