@@ -128,6 +128,7 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                         .lineToLinearHeading(new Pose2d(58, -3.5, Math.toRadians(94)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 11.03))
                         .forward(65)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
                         .lineToConstantHeading(new Vector2d(31, 82.5))
@@ -144,10 +145,24 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                         })
                         .waitSeconds(2)
                         .build();
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.15);
+                            linearSlide_right.setPower(0.15);
+                        })
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(0);
+                        })
+                        .back(15)
+                        .lineToConstantHeading(new Vector2d(-2, 76.5))
+                        .forward(15)
+                        .build();
                 drive.followTrajectorySequence(To_Marker);
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score);
+//                drive.followTrajectorySequence(Park);
+
                 //CENTER
             } else if (lcr == 2) {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
@@ -166,6 +181,7 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                         .lineToConstantHeading(new Vector2d(27, 82.5))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 11.03))
                         .forward(1.5)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
@@ -177,10 +193,23 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                         })
                         .waitSeconds(2)
                         .build();
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.15);
+                            linearSlide_right.setPower(0.15);
+                        })
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(0);
+                        })
+                        .back(15)
+                        .lineToConstantHeading(new Vector2d(-2, 76.5))
+                        .forward(15)
+                        .build();
                 drive.followTrajectorySequence(To_Marker);
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score);
+//                drive.followTrajectorySequence(Park);
                 //LEFT
             } else if (lcr == 3) {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
@@ -192,6 +221,7 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                         .lineToLinearHeading(new Pose2d(58, -3.5, Math.toRadians(94)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 11.03))
                         .forward(65)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
                         .lineToConstantHeading(new Vector2d(18, 82.5))
@@ -208,10 +238,23 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                         })
                         .waitSeconds(2)
                         .build();
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.15);
+                            linearSlide_right.setPower(0.15);
+                        })
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(0);
+                        })
+                        .back(15)
+                        .lineToConstantHeading(new Vector2d(-2, 76.5))
+                        .forward(15)
+                        .build();
                 drive.followTrajectorySequence(To_Marker);
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score);
+//                drive.followTrajectorySequence(Park);
             }
         }
     }

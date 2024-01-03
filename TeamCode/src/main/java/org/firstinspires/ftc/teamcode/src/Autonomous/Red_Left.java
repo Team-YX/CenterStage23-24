@@ -133,11 +133,19 @@ public class Red_Left extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-0.5);
+                            linearSlide_right.setPower(-0.5);
+                        })
+                        .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0.9);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(2)
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.15);
+                            linearSlide_right.setPower(0.15);
+                        })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
@@ -174,11 +182,19 @@ public class Red_Left extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-0.5);
+                            linearSlide_right.setPower(-0.5);
+                        })
+                        .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0.9);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(2)
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.15);
+                            linearSlide_right.setPower(0.15);
+                        })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
@@ -213,11 +229,19 @@ public class Red_Left extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-0.5);
+                            linearSlide_right.setPower(-0.5);
+                        })
+                        .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0.9);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(2)
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.15);
+                            linearSlide_right.setPower(0.15);
+                        })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
