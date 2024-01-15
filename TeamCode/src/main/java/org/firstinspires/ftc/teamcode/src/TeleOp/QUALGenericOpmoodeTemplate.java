@@ -1,13 +1,14 @@
-package org.firstinspires.ftc.teamcode.src.MecanumWheel;
+package org.firstinspires.ftc.teamcode.src.TeleOp;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+
+
 
 public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
 
@@ -72,7 +73,7 @@ public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
         plane_rotate.setDirection(Servo.Direction.FORWARD);
         Launcher.setDirection(Servo.Direction.REVERSE);
 
-        linearSlide_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        linearSlide_right.setDirection(DcMotorSimple.Direction.FORWARD);
         linearSlide_left.setDirection(DcMotorSimple.Direction.FORWARD);
 
         front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

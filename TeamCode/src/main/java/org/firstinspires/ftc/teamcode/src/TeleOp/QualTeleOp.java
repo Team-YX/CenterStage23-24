@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.MecanumWheel;
+package org.firstinspires.ftc.teamcode.src.TeleOp;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -23,8 +23,8 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
             defaultInit();
 
             while (!isStarted() && !isStopRequested()) {
-                Intake1.setPosition(0.3);
-                Intake2.setPosition(0.3);
+                Intake1.setPosition(0.265);
+                Intake2.setPosition(0.245);
                 plane_rotate.setPosition(0);
                 Launcher.setPosition(0.34);
                 Outtake_left.setPosition(0.575);
@@ -44,6 +44,8 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
                 OuttakeControl();
 
                 LauncherControl();
+
+                ExtendControl();
 
                 IN_N_OUT_Control();
 
@@ -65,8 +67,8 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
     }
 
     void LinearSlideControl() {
-        linearSlide_left.setPower(gamepad2.left_stick_y);
-        linearSlide_right.setPower(gamepad2.left_stick_y);
+        linearSlide_left.setPower(-gamepad2.left_stick_y);
+        linearSlide_right.setPower(-gamepad2.left_stick_y);
     }
 
     void IN_N_OUT_Control() {
@@ -84,7 +86,7 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
         if (gamepad2.a) {
             plane_rotate.setPosition(0);
         } else if (gamepad2.y) {
-            plane_rotate.setPosition(0.1);
+            plane_rotate.setPosition(0.075);
         }
         if (gamepad2.b) {
             Launcher.setPosition(0.34);
@@ -95,12 +97,12 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
 
     void IntakeControl() {
         if (gamepad2.dpad_down) {
-            Intake1.setPosition(0);
-            Intake2.setPosition(0);
+            Intake1.setPosition(.965);
+            Intake2.setPosition(.965);
         }
         if (gamepad2.dpad_up) {
-            Intake1.setPosition(1);
-            Intake2.setPosition(1);
+            Intake1.setPosition(.265);
+            Intake2.setPosition(.245);
         }
     }
 
@@ -112,6 +114,17 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
         if (gamepad2.right_bumper) {
             Outtake_left.setPosition(0.575);
             Outtake_right.setPosition(0.445);
+        }
+    }
+
+    void ExtendControl(){
+        if(gamepad2.dpad_right){
+            extend_left.setPosition(0);
+            extend_right.setPosition(0);
+        }
+        if(gamepad2.dpad_left){
+            extend_left.setPosition(0.125);
+            extend_right.setPosition(0.125);
         }
     }
 
