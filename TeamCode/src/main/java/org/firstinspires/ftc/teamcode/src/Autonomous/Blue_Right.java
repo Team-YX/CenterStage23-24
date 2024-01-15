@@ -8,7 +8,8 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.src.MecanumWheel.GenericOpmoodeTemplate;
+import org.firstinspires.ftc.teamcode.src.TeleOp.Location;
+import org.firstinspires.ftc.teamcode.src.TeleOp.QUALGenericOpmoodeTemplate;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.src.vision.PipeLine_BLUE;
@@ -20,10 +21,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 @Autonomous(name = "✝\uD83D\uDFE6 Blue_Right(5 Stack) \uD83D\uDFE6✝", group = "COMPETITION")
 
-public class Blue_Right extends GenericOpmoodeTemplate {
+public class Blue_Right extends QUALGenericOpmoodeTemplate {
     private OpenCvCamera webcam;
-    int lcr;
-    boolean Go;
+    Location lcr;
 
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 180; // height of wanted camera resolution
@@ -78,46 +78,36 @@ public class Blue_Right extends GenericOpmoodeTemplate {
 
         while (!isStarted() && !isStopRequested()) {
 
-            Launcher.setPower(-1);
-            Intake1.setPosition(0.3);
-            Intake2.setPosition(0.3);
+            Intake1.setPosition(0.265);
+            Intake2.setPosition(0.245);
+            plane_rotate.setPosition(0);
+            Launcher.setPosition(0.34);
+            Outtake_left.setPosition(0.575);
+            Outtake_right.setPosition(0.445);
 
             if (myPipeline.getRectMidpointX() > 200 && myPipeline.getRectArea() > 1000) {
-                telemetry.addLine("RIGHT");
-                telemetry.addLine("");
-                lcr = 1;
-                Go = true;
+                lcr = Location.RIGHT;
             } else if (myPipeline.getRectMidpointX() > 110 && myPipeline.getRectMidpointX() < 200 && myPipeline.getRectArea() > 1000) {
-                telemetry.addLine("CENTER");
-                telemetry.addLine("");
-                lcr = 2;
-                Go = true;
+                lcr = Location.CENTER;
             } else if (myPipeline.getRectMidpointX() < 110 && myPipeline.getRectArea() > 1000) {
-                telemetry.addLine("LEFT");
-                telemetry.addLine("");
-                lcr = 3;
-                Go = true;
+                lcr = Location.LEFT;
             } else {
-                telemetry.addLine("No prop found, please readjust the camera position");
-                telemetry.addLine("");
-                Go = false;
+                lcr = Location.UNKNOWN;
+                //return;
             }
+            telemetry.addLine(lcr.toString());
             telemetry.addData("RectArea: ", myPipeline.getRectArea());
             telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
             telemetry.addData("lcr", lcr);
-            telemetry.addData("Status", Go);
             telemetry.update();
         }
 
 
         myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
 
-        if (Go) {
-            Launcher.setPower(-1);
-            Intake1.setPosition(0.3);
-            Intake2.setPosition(0.3);
-            //RIGHT
-            if (lcr == 1) {
+        switch (lcr) {
+            case UNKNOWN:
+            case RIGHT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .lineToConstantHeading(new Vector2d(25, -11))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 11.03))
@@ -161,10 +151,12 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score);
-//                drive.followTrajectorySequence(Park);
+                drive.followTrajectorySequence(Park);
+                break;
+            }
 
-                //CENTER
-            } else if (lcr == 2) {
+            //CENTER
+            case CENTER: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .lineToConstantHeading(new Vector2d(33, 0))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 11.03))
@@ -209,9 +201,11 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score);
-//                drive.followTrajectorySequence(Park);
-                //LEFT
-            } else if (lcr == 3) {
+                drive.followTrajectorySequence(Park);
+                break;
+            }
+            //LEFT
+            case LEFT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .splineTo(new Vector2d(33, 5), Math.toRadians(90))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 11.03))
@@ -254,7 +248,8 @@ public class Blue_Right extends GenericOpmoodeTemplate {
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score);
-//                drive.followTrajectorySequence(Park);
+                drive.followTrajectorySequence(Park);
+                break;
             }
         }
     }
