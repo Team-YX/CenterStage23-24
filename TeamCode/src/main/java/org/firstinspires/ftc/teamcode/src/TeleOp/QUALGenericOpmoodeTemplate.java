@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
+import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -22,6 +23,8 @@ public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
     protected Servo extend_right;
     protected Servo Outtake_left;
     protected Servo Outtake_right;
+    protected Servo OutDoor;
+//    protected CRServo InDoor;
     protected DcMotorEx front_right;
     protected DcMotorEx front_left;
     protected DcMotorEx back_left;
@@ -47,6 +50,8 @@ public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
         Outtake_right = hardwareMap.get(Servo.class, "OuttakeR");
         plane_rotate = hardwareMap.get(Servo.class, "rotator");
         Launcher = hardwareMap.get(Servo.class, "Launcher");
+        OutDoor = hardwareMap.get(Servo.class, "OutDoor");
+//        InDoor = hardwareMap.get(CRServo.class, "InDoor");
 
 //      DistanceSensor dsensor2 = hardwareMap.get(DistanceSensor.class, "dsensor2");
 //      DistanceSensor dsensor1 = hardwareMap.get(DistanceSensor.class, "dsensor1");
@@ -63,6 +68,8 @@ public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
         front_left.setDirection(DcMotorSimple.Direction.FORWARD);
         back_left.setDirection(DcMotorSimple.Direction.FORWARD);
         back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        OutDoor.setDirection(Servo.Direction.FORWARD);
 
         Intake1.setDirection(Servo.Direction.FORWARD);
         Intake2.setDirection(Servo.Direction.REVERSE);

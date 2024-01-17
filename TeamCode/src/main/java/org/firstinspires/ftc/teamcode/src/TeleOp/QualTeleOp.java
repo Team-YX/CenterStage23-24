@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "✝QUAL_TELEOP✝", group = "COMPETITION")
-public class QualTeleOp extends QUALGenericOpmoodeTemplate{
+public class QualTeleOp extends QUALGenericOpmoodeTemplate {
 
     public static String getStackTraceAsString(Throwable e) {
         StringWriter sw = new StringWriter();
@@ -23,12 +23,13 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
             defaultInit();
 
             while (!isStarted() && !isStopRequested()) {
-                Intake1.setPosition(0.265);
-                Intake2.setPosition(0.245);
+                Intake1.setPosition(0.73);
+                Intake2.setPosition(0.73);
                 plane_rotate.setPosition(0);
                 Launcher.setPosition(0.34);
-                Outtake_left.setPosition(0.575);
-                Outtake_right.setPosition(0.445);
+                Outtake_left.setPosition(0.85);
+                Outtake_right.setPosition(0.15);
+                OutDoor.setPosition(0.4);
             }
 
             while (opModeIsActive()) {
@@ -45,11 +46,13 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
 
                 LauncherControl();
 
-                ExtendControl();
+//                ExtendControl();
 
                 IN_N_OUT_Control();
 
                 LinearSlideControl();
+
+                Door();
 
                 TelemetryUpdate(Speed);
 
@@ -64,6 +67,16 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
         back_right.setPower(Speed * (gamepad1.right_stick_x + +gamepad1.left_stick_y + -gamepad1.left_stick_x));
         front_right.setPower(Speed * 1 * (gamepad1.right_stick_x + (+gamepad1.left_stick_y - -gamepad1.left_stick_x)));
         front_left.setPower(Speed * 1 * (-gamepad1.right_stick_x + +gamepad1.left_stick_y + -gamepad1.left_stick_x));
+    }
+
+    void Door() {
+        if (gamepad2.x) {
+            //Open
+            OutDoor.setPosition(0.4);
+        } else if (gamepad2.b) {
+            //Close
+            OutDoor.setPosition(0.1);
+        }
     }
 
     void LinearSlideControl() {
@@ -97,32 +110,38 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
 
     void IntakeControl() {
         if (gamepad2.dpad_down) {
-            Intake1.setPosition(.965);
-            Intake2.setPosition(.965);
+            Intake1.setPosition(.52);
+            Intake2.setPosition(.52);
         }
         if (gamepad2.dpad_up) {
-            Intake1.setPosition(.265);
-            Intake2.setPosition(.245);
+            Intake1.setPosition(.73);
+            Intake2.setPosition(.73);
         }
     }
 
     void OuttakeControl() {
+        //Scoring
         if (gamepad2.left_bumper) {
             Outtake_left.setPosition(0.5);
             Outtake_right.setPosition(0.52);
+        } else if (gamepad2.right_bumper) {
+            //Middle
+            Outtake_left.setPosition(0.75);
+            Outtake_right.setPosition(0.28);
+        } else if (gamepad2.back) {
+            //Horizontal
+            Outtake_left.setPosition(0.85);
+            Outtake_right.setPosition(0.15);
         }
-        if (gamepad2.right_bumper) {
-            Outtake_left.setPosition(0.575);
-            Outtake_right.setPosition(0.445);
-        }
+
     }
 
-    void ExtendControl(){
-        if(gamepad2.dpad_right){
+    void ExtendControl() {
+        if (gamepad2.dpad_right) {
             extend_left.setPosition(0);
             extend_right.setPosition(0);
         }
-        if(gamepad2.dpad_left){
+        if (gamepad2.dpad_left) {
             extend_left.setPosition(0.125);
             extend_right.setPosition(0.125);
         }
@@ -133,13 +152,14 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate{
 
         telemetry.addData("inr", Intake1.getPosition());
         telemetry.addData("inl", Intake2.getPosition());
-        telemetry.addData("outl", Outtake_left.getPosition());
-        telemetry.addData("outr", Outtake_right.getPosition());
+        telemetry.addData("outL", Outtake_left.getPosition());
+        telemetry.addData("outR", Outtake_right.getPosition());
         telemetry.addData("lunch", Launcher.getPosition());
         telemetry.addData("rotor", plane_rotate.getPosition());
         telemetry.addData("exl", extend_left.getPosition());
         telemetry.addData("exr", extend_right.getPosition());
-
+        telemetry.addData("OutDoor", OutDoor.getPosition());
+        //telemetry.addData("InDoor", InDoor.getPower());
         telemetry.addData("FR_Power", front_right.getPower());
         telemetry.addData("FLPower", front_left.getPower());
         telemetry.addData("BR_Power", back_right.getPower());
