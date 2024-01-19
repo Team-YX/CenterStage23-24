@@ -19,9 +19,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name = "✝\uD83D\uDFE5 Red_Right (Backboard)-Corner \uD83D\uDFE5✝", group = "COMPETITION")
+@Autonomous(name = "✝\uD83D\uDFE5 Backboard-Corner \uD83D\uDFE5✝", group = "COMPETITION")
 
-public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
+public class RR_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
     private OpenCvCamera webcam;
     Location lcr;
 
@@ -77,12 +77,15 @@ public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
 
         while (!isStarted() && !isStopRequested()) {
 
-            Intake1.setPosition(0.265);
-            Intake2.setPosition(0.245);
+            extend_left.setPosition(.435);
+            extend_right.setPosition(.45);
+            Intake1.setPosition(0.73);
+            Intake2.setPosition(0.73);
             plane_rotate.setPosition(0);
             Launcher.setPosition(0.34);
-            Outtake_left.setPosition(0.575);
-            Outtake_right.setPosition(0.445);
+            Outtake_left.setPosition(0.75);
+            Outtake_right.setPosition(0.28);
+            OutDoor.setPosition(0.1);
 
             if (myPipeline.getRectMidpointX() > 200 && myPipeline.getRectArea() > 1000) {
                 lcr = Location.RIGHT;
@@ -114,11 +117,36 @@ public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
                         .lineToLinearHeading(new Pose2d(19, -37, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(1.5)
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.38);
+                            linearSlide_right.setPower(0.38);
+                        })
                         .build();
-                TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
-                        .waitSeconds(0.5)
+                TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
+                        .addDisplacementMarker(() -> {
+                            Outtake_left.setPosition(0.5);
+                            Outtake_right.setPosition(0.52);
+                        })
+                        .waitSeconds(1)
                         .build();
-                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                TrajectorySequence Score2 = drive.trajectorySequenceBuilder(Score1.end())
+                        .addDisplacementMarker(() -> {
+                            OutDoor.setPosition(0.4);
+                        })
+                        .waitSeconds(1)
+                        .build();
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score2.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-0.3);
+                            linearSlide_right.setPower(-0.3);
+                        })
+                        .addDisplacementMarker(() -> {
+                            OutDoor.setPosition(0.1);
+                        })
+                        .addDisplacementMarker(() -> {
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.28);
+                        })
                         .forward(10)
                         .lineToLinearHeading(new Pose2d(-1, -30, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
@@ -128,7 +156,8 @@ public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
 
                 drive.followTrajectorySequence(To_Marker);
                 drive.followTrajectorySequence(To_BackBoard);
-//                drive.followTrajectorySequence(Score);
+                drive.followTrajectorySequence(Score1);
+                drive.followTrajectorySequence(Score2);
                 drive.followTrajectorySequence(Park);
                 break;
 
@@ -140,14 +169,39 @@ public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(24, -37, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(25, -37.5, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(1.5)
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.38);
+                            linearSlide_right.setPower(0.38);
+                        })
                         .build();
-                TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
-                        .waitSeconds(0.5)
+                TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
+                        .addDisplacementMarker(() -> {
+                            Outtake_left.setPosition(0.5);
+                            Outtake_right.setPosition(0.52);
+                        })
+                        .waitSeconds(1)
                         .build();
-                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
+                TrajectorySequence Score2 = drive.trajectorySequenceBuilder(Score1.end())
+                        .addDisplacementMarker(() -> {
+                            OutDoor.setPosition(0.4);
+                        })
+                        .waitSeconds(1)
+                        .build();
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score2.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-0.3);
+                            linearSlide_right.setPower(-0.3);
+                        })
+                        .addDisplacementMarker(() -> {
+                            OutDoor.setPosition(0.1);
+                        })
+                        .addDisplacementMarker(() -> {
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.28);
+                        })
                         .forward(10)
                         .lineToLinearHeading(new Pose2d(-1, -30, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
@@ -156,26 +210,53 @@ public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
 
                 drive.followTrajectorySequence(To_Marker);
                 drive.followTrajectorySequence(To_BackBoard);
-//                drive.followTrajectorySequence(Score);
+                drive.followTrajectorySequence(Score1);
+                drive.followTrajectorySequence(Score2);
                 drive.followTrajectorySequence(Park);
                 break;
 
             }
             case LEFT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .splineTo(new Vector2d(33, 5), Math.toRadians(90))
+                        .splineTo(new Vector2d(25.5, 5), Math.toRadians(90))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
+                        .forward(4.5)
+                        .back(7)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
                         .lineToLinearHeading(new Pose2d(30, -37, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(1.5)
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(0.38);
+                            linearSlide_right.setPower(0.38);
+                        })
                         .build();
-                TrajectorySequence Score = drive.trajectorySequenceBuilder(To_BackBoard.end())
-                        .waitSeconds(2)
+                TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
+                        .addDisplacementMarker(() -> {
+                            Outtake_left.setPosition(0.5);
+                            Outtake_right.setPosition(0.52);
+                        })
+                        .waitSeconds(1)
                         .build();
-                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score.end())
-
+                TrajectorySequence Score2 = drive.trajectorySequenceBuilder(Score1.end())
+                        .addDisplacementMarker(() -> {
+                            OutDoor.setPosition(0.4);
+                        })
+                        .waitSeconds(1)
+                        .build();
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score2.end())
+                        .addDisplacementMarker(() -> {
+                            linearSlide_left.setPower(-0.3);
+                            linearSlide_right.setPower(-0.3);
+                        })
+                        .addDisplacementMarker(() -> {
+                            OutDoor.setPosition(0.1);
+                        })
+                        .addDisplacementMarker(() -> {
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.28);
+                        })
                         .forward(10)
                         .lineToLinearHeading(new Pose2d(-1, -30, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
@@ -185,7 +266,8 @@ public class Red_Right_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
 
                 drive.followTrajectorySequence(To_Marker);
                 drive.followTrajectorySequence(To_BackBoard);
-//                drive.followTrajectorySequence(Score);
+                drive.followTrajectorySequence(Score1);
+                drive.followTrajectorySequence(Score2);
                 drive.followTrajectorySequence(Park);
                 break;
             }

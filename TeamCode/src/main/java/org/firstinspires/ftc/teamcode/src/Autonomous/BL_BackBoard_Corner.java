@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name = "✝\uD83D\uDFE6 Blue_Left(BackBoard)-Corner \uD83D\uDFE6✝", group = "COMPETITION")
+@Autonomous(name = "✝\uD83D\uDFE6 BackBoard-Corner \uD83D\uDFE6✝", group = "COMPETITION")
 public class BL_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
 
     private OpenCvCamera webcam;
@@ -78,8 +78,8 @@ public class BL_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
 
         while (!isStarted() && !isStopRequested()) {
 
-            Intake1.setPosition(0.265);
-            Intake2.setPosition(0.245);
+            Intake1.setPosition(0.73);
+            Intake2.setPosition(0.73);
             plane_rotate.setPosition(0);
             Launcher.setPosition(0.34);
             Outtake_left.setPosition(0.75);
@@ -115,7 +115,7 @@ public class BL_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(18, 38.5, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(17, 38.5, Math.toRadians(270)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(2)
                         .addDisplacementMarker(() -> {
@@ -167,7 +167,7 @@ public class BL_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(26, 38.5, Math.toRadians(270)))
+                        .lineToLinearHeading(new Pose2d(25, 38.5, Math.toRadians(270)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(2)
                         .addDisplacementMarker(() -> {

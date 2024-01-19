@@ -23,13 +23,15 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
             defaultInit();
 
             while (!isStarted() && !isStopRequested()) {
-                Intake1.setPosition(0.73);
-                Intake2.setPosition(0.73);
-                plane_rotate.setPosition(0);
-                Launcher.setPosition(0.34);
                 Outtake_left.setPosition(0.85);
                 Outtake_right.setPosition(0.15);
                 OutDoor.setPosition(0.4);
+                Intake1.setPosition(0.73);
+                Intake2.setPosition(0.73);
+                extend_left.setPosition(.435);
+                extend_right.setPosition(.45);
+                plane_rotate.setPosition(0);
+                Launcher.setPosition(0.34);
             }
 
             while (opModeIsActive()) {
@@ -46,7 +48,7 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
 
                 LauncherControl();
 
-//                ExtendControl();
+                ExtendControl();
 
                 IN_N_OUT_Control();
 
@@ -76,6 +78,10 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
         } else if (gamepad2.b) {
             //Close
             OutDoor.setPosition(0.1);
+        } else if (gamepad1.x) {
+            InDoor.setPower(0.5);
+        } else {
+            InDoor.setPower(0);
         }
     }
 
@@ -137,13 +143,15 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
     }
 
     void ExtendControl() {
+        //these two servos only operate between 0.15 and 0.85. Giving them a value outside that
+        // range will cause them to stutter and glitch out
         if (gamepad2.dpad_right) {
-            extend_left.setPosition(0);
-            extend_right.setPosition(0);
+            extend_left.setPosition(.435);
+            extend_right.setPosition(.45);
         }
         if (gamepad2.dpad_left) {
-            extend_left.setPosition(0.125);
-            extend_right.setPosition(0.125);
+            extend_left.setPosition(0.485);
+            extend_right.setPosition(0.5);
         }
     }
 
@@ -159,7 +167,7 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
         telemetry.addData("exl", extend_left.getPosition());
         telemetry.addData("exr", extend_right.getPosition());
         telemetry.addData("OutDoor", OutDoor.getPosition());
-        //telemetry.addData("InDoor", InDoor.getPower());
+        telemetry.addData("InDoor", InDoor.getPower());
         telemetry.addData("FR_Power", front_right.getPower());
         telemetry.addData("FLPower", front_left.getPower());
         telemetry.addData("BR_Power", back_right.getPower());
