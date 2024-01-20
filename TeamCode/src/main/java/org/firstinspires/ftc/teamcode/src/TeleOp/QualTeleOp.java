@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import java.io.PrintWriter;
@@ -15,6 +16,9 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
         return sw.toString();
     }
 
+    boolean Ydepressed = true;
+    boolean Xdepresssed = true;
+    boolean BackDepressed = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,7 +52,7 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
 
                 LauncherControl();
 
-                ExtendControl();
+//                ExtendControl();
 
                 IN_N_OUT_Control();
 
@@ -72,16 +76,22 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
     }
 
     void Door() {
-        if (gamepad2.x) {
+        if (gamepad2.y && Ydepressed) {
             //Open
             OutDoor.setPosition(0.4);
-        } else if (gamepad2.b) {
+
+            Outtake_left.setPosition(0.5);
+            Outtake_right.setPosition(0.52);
+
+            Ydepressed = false;
+        } else if (gamepad2.y && !Ydepressed) {
             //Close
             OutDoor.setPosition(0.1);
-        } else if (gamepad1.x) {
-            InDoor.setPower(0.5);
-        } else {
-            InDoor.setPower(0);
+            Ydepressed = true;
+//        } else if (gamepad1.x) {
+//            InDoor.setPower(0.5);
+//        } else {
+//            InDoor.setPower(0);
         }
     }
 
@@ -92,32 +102,54 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
 
     void IN_N_OUT_Control() {
 
-        if (gamepad2.right_trigger > 0) {
-            IN_N_OUT.setPower(-gamepad2.right_trigger);
-        } else if (gamepad2.left_trigger > 0) {
-            IN_N_OUT.setPower(gamepad2.left_trigger);
+        if (Math.abs(gamepad2.right_trigger-gamepad2.left_trigger) > 0.01) {
+            IN_N_OUT.setPower(gamepad2.left_trigger-gamepad2.right_trigger);
+            if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.b) {
+                Outtake_left.setPosition(0.85);
+                Outtake_right.setPosition(0.15);
+
+                InDoor.setDirection(DcMotorSimple.Direction.FORWARD);
+                InDoor.setPower(0.5);
+            } else if (gamepad2.left_trigger > gamepad2.right_trigger && gamepad2.b) {
+                InDoor.setDirection(DcMotorSimple.Direction.REVERSE);
+                InDoor.setPower(0.5);
+            } else {
+                InDoor.setDirection(DcMotorSimple.Direction.FORWARD);
+                InDoor.setPower(0);
+            }
         } else {
             IN_N_OUT.setPower(0);
         }
+//        if (gamepad2.right_trigger > 0) {
+//            IN_N_OUT.setPower(-gamepad2.right_trigger);
+//        } else if (gamepad2.left_trigger > 0) {
+//            IN_N_OUT.setPower(gamepad2.left_trigger);
+//        } else {
+//            IN_N_OUT.setPower(0);
+//        }
     }
 
     void LauncherControl() {
-        if (gamepad2.a) {
+        if (gamepad2.x && !Xdepresssed) {
             plane_rotate.setPosition(0);
-        } else if (gamepad2.y) {
+            Xdepresssed = true;
+        } else if (gamepad2.x && Xdepresssed) {
             plane_rotate.setPosition(0.075);
+            Xdepresssed = false;
         }
-        if (gamepad2.b) {
+        if (gamepad2.back && !BackDepressed) {
             Launcher.setPosition(0.34);
-        } else if (gamepad2.start) {
+            BackDepressed = true;
+        } else if (gamepad2.back && BackDepressed) {
             Launcher.setPosition(0.2);
+            BackDepressed = false;
         }
     }
 
     void IntakeControl() {
         if (gamepad2.dpad_down) {
-            Intake1.setPosition(.52);
-            Intake2.setPosition(.52);
+            Intake1.setPosition(.54);
+            Intake2.setPosition(.54);
         }
         if (gamepad2.dpad_up) {
             Intake1.setPosition(.73);
@@ -127,18 +159,20 @@ public class QualTeleOp extends QUALGenericOpmoodeTemplate {
 
     void OuttakeControl() {
         //Scoring
-        if (gamepad2.left_bumper) {
-            Outtake_left.setPosition(0.5);
-            Outtake_right.setPosition(0.52);
-        } else if (gamepad2.right_bumper) {
+//        if (gamepad2.left_bumper) {
+//            Outtake_left.setPosition(0.5);
+//            Outtake_right.setPosition(0.52);
+//        }
+        if (gamepad2.a) {
             //Middle
             Outtake_left.setPosition(0.75);
             Outtake_right.setPosition(0.28);
-        } else if (gamepad2.back) {
-            //Horizontal
-            Outtake_left.setPosition(0.85);
-            Outtake_right.setPosition(0.15);
         }
+//        if (gamepad2.back) {
+//            //Horizontal
+//            Outtake_left.setPosition(0.85);
+//            Outtake_right.setPosition(0.15);
+//        }
 
     }
 
