@@ -188,7 +188,7 @@ public class BR_FiveStack_Corner extends QUALGenericOpmoodeTemplate {
                         .forward(65)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
-                        .lineToLinearHeading(new Pose2d(31, 86.5, Math.toRadians(260)))
+                        .lineToLinearHeading(new Pose2d(29.5, 86.5, Math.toRadians(260)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 15.30))
                         .back(1.5)
                         .build();
