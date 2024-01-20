@@ -109,12 +109,12 @@ public class RR_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
             case UNKNOWN:
             case RIGHT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .lineToConstantHeading(new Vector2d(25, -11))
+                        .lineToConstantHeading(new Vector2d(25, -12))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(10)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(19, -37, Math.toRadians(90)))
+                        .lineToLinearHeading(new Pose2d(17.4, -37, Math.toRadians(90)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
                         .back(1.5)
                         .addDisplacementMarker(() -> {
@@ -220,7 +220,7 @@ public class RR_BackBoard_Corner extends QUALGenericOpmoodeTemplate {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .splineTo(new Vector2d(25.5, 5), Math.toRadians(90))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .forward(4.5)
+                        .forward(3.5)
                         .back(7)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(To_Marker.end())
