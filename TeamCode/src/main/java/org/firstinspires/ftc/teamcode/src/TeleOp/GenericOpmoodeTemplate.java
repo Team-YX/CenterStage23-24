@@ -1,18 +1,18 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
 
-public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
+public abstract class GenericOpmoodeTemplate extends LinearOpMode {
 
 
     IMU imu;
@@ -88,6 +88,24 @@ public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
         front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+    public void LinearSlide (HardwareMap hardwareMap, String slideName_left, String slideName_right) {
+
+        linearSlide_left = (DcMotorEx) hardwareMap.dcMotor.get(slideName_left);
+        linearSlide_right = (DcMotorEx) hardwareMap.dcMotor.get(slideName_right);
+
+        linearSlide_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlide_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linearSlide_left.setTargetPosition(HeightLevel.getEncoderCountFromEnum(HeightLevel.Down));
+        linearSlide_left.setPower(-1);
+        linearSlide_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        linearSlide_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlide_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linearSlide_right.setTargetPosition(HeightLevel.getEncoderCountFromEnum(HeightLevel.Down));
+        linearSlide_right.setPower(-1);
+        linearSlide_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void Zero_power() {
@@ -202,4 +220,5 @@ public abstract class QUALGenericOpmoodeTemplate extends LinearOpMode {
         back_left.setPower(0);
         back_right.setPower(0);
     }
+
 }
