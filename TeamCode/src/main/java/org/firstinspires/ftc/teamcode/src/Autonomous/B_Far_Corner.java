@@ -10,8 +10,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.src.TeleOp.Location;
+import org.firstinspires.ftc.teamcode.src.Subsystems.Location;
+import org.firstinspires.ftc.teamcode.src.Subsystems.Slide.LinearSlide;
 import org.firstinspires.ftc.teamcode.src.TeleOp.GenericOpmoodeTemplate;
+import org.firstinspires.ftc.teamcode.src.TeleOp.OpmodeTemplate_Auto;
 import org.firstinspires.ftc.teamcode.src.vision.PipeLine_BLUE;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -21,9 +23,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 @Autonomous(name = "✝\uD83D\uDFE6 Far-Corner \uD83D\uDFE6✝", group = "COMPETITION")
 
-public class B_Far_Corner extends GenericOpmoodeTemplate {
+public class B_Far_Corner extends OpmodeTemplate_Auto {
     private OpenCvCamera webcam;
     Location lcr;
+    private LinearSlide Slide_right;
+    private LinearSlide Slide_left;
 
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 176; // height of wanted camera resolution
@@ -39,6 +43,10 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
 
     @Override
     public void runOpMode() {
+        Slide_left = new LinearSlide(hardwareMap, "RL");
+        Slide_right = new LinearSlide(hardwareMap, "LL");
+
+        Slide_right.reverseMotor();
         defaultInit();
 
         // OpenCV webcam
@@ -78,13 +86,13 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
 
         while (!isStarted() && !isStopRequested()) {
 
-            Intake1.setPosition(0.83);
+            Intake1.setPosition(0.83);//.54 down
             Intake2.setPosition(0.83);
             plane_rotate.setPosition(0);
             Launcher.setPosition(0.34);
-            Outtake_left.setPosition(0.75);
-            Outtake_right.setPosition(0.28);
-            OutDoor.setPosition(0.1);
+//            Outtake_left.setPosition(0.75);
+//            Outtake_right.setPosition(0.28);
+            OutDoor.setPosition(0.4);
 
 
             if (myPipeline.getRectMidpointX() > 200 && myPipeline.getRectArea() > 1000) {
@@ -130,8 +138,8 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
-                            linearSlide_left.setPower(0.5);
-                            linearSlide_right.setPower(0.5);
+//                            linearSlide_left.setPower(0.5);
+//                            linearSlide_right.setPower(0.5);
                         })
                         .waitSeconds(2.2)
                         .build();
@@ -150,8 +158,8 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score3.end())
                         .addDisplacementMarker(() -> {
-                            linearSlide_left.setPower(-0.3);
-                            linearSlide_right.setPower(-0.3);
+//                            linearSlide_left.setPower(-0.3);
+//                            linearSlide_right.setPower(-0.3);
                         })
                         .addDisplacementMarker(() -> {
                             OutDoor.setPosition(0.1);
@@ -194,8 +202,8 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
-                            linearSlide_left.setPower(0.5);
-                            linearSlide_right.setPower(0.5);
+//                            linearSlide_left.setPower(0.5);
+//                            linearSlide_right.setPower(0.5);
                         })
                         .waitSeconds(2.2)
                         .build();
@@ -214,8 +222,8 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score3.end())
                         .addDisplacementMarker(() -> {
-                            linearSlide_left.setPower(-0.3);
-                            linearSlide_right.setPower(-0.3);
+//                            linearSlide_left.setPower(-0.3);
+//                            linearSlide_right.setPower(-0.3);
                         })
                         .addDisplacementMarker(() -> {
                             OutDoor.setPosition(0.1);
@@ -256,8 +264,8 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .addDisplacementMarker(() -> {
-                            linearSlide_left.setPower(0.5);
-                            linearSlide_right.setPower(0.5);
+//                            linearSlide_left.setPower(0.5);
+//                            linearSlide_right.setPower(0.5);
                         })
                         .waitSeconds(2.2)
                         .build();
@@ -276,8 +284,8 @@ public class B_Far_Corner extends GenericOpmoodeTemplate {
                         .build();
                 TrajectorySequence Park = drive.trajectorySequenceBuilder(Score3.end())
                         .addDisplacementMarker(() -> {
-                            linearSlide_left.setPower(-0.3);
-                            linearSlide_right.setPower(-0.3);
+//                            linearSlide_left.setPower(-0.3);
+//                            linearSlide_right.setPower(-0.3);
                         })
                         .addDisplacementMarker(() -> {
                             OutDoor.setPosition(0.1);

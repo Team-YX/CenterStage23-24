@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.TeleOp;
+package org.firstinspires.ftc.teamcode.src.Subsystems.Slide;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;

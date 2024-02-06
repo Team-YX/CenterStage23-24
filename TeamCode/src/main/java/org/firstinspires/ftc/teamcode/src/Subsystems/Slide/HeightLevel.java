@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.TeleOp;
+package org.firstinspires.ftc.teamcode.src.Subsystems.Slide;
 
 public enum HeightLevel {
     UnderGround,
@@ -13,6 +13,7 @@ public enum HeightLevel {
     /**
      * Pass in the Height Level, returns the the position to go to in ticks
      */
+    //TODO: change the encoder heights
     private static int getEncoderCountFromLevel(HeightLevel level) {
         switch (level) {
             case HighJunction:

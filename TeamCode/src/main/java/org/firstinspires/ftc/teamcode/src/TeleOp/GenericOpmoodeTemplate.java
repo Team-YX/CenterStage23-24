@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.src.TeleOp;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -33,6 +34,8 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
     protected DcMotorEx linearSlide_right;
     protected DcMotorEx linearSlide_left;
     protected DcMotorEx IN_N_OUT;
+    protected ColorRangeSensor back_color;
+    protected ColorRangeSensor front_color;
 
     public void defaultInit() {
 
@@ -64,6 +67,9 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         linearSlide_right = hardwareMap.get(DcMotorEx.class, "RL");
         linearSlide_left = hardwareMap.get(DcMotorEx.class, "LL");
         IN_N_OUT = hardwareMap.get(DcMotorEx.class, "IN_N_OUT");
+
+        back_color = hardwareMap.get(ColorRangeSensor.class, "back_color");
+        front_color = hardwareMap.get(ColorRangeSensor.class, "front_color");
 
         front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.FORWARD);
