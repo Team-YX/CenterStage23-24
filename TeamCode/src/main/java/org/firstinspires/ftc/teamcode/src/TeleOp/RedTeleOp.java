@@ -1,21 +1,40 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.src.Subsystems.CenterStageGameObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "✝QUAL_TELEOP✝", group = "COMPETITION")
-public class TeleOp extends GenericOpmoodeTemplate {
+import javax.net.ssl.CertPathTrustManagerParameters;
+
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "✝\uD83D\uDFE5RED_STATE_TELEOP\uD83D\uDFE5✝", group = "COMPETITION")
+public class RedTeleOp extends GenericOpmoodeTemplate {
 
     public static String getStackTraceAsString(Throwable e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         return sw.toString();
+    }
+
+    private final ElapsedTime IntakeTimer = new ElapsedTime();
+
+    protected BlinkinPattern defaultColor;
+    protected BlinkinPattern currentBackPattern;
+    protected BlinkinPattern currentFrontPattern;
+    protected BlinkinPattern proposedBackPattern;
+    protected BlinkinPattern proposedFrontPattern;
+
+    public RedTeleOp() {
+        defaultColor = BlinkinPattern.RED;
+        currentBackPattern = this.defaultColor;
+        currentFrontPattern = this.defaultColor;
     }
 
     boolean Ydepressed = true;
@@ -28,12 +47,14 @@ public class TeleOp extends GenericOpmoodeTemplate {
             double Speed = 1;
             defaultInit();
 
+            leds.setPattern(currentBackPattern);
+
             while (!isStarted() && !isStopRequested()) {
                 Outtake_left.setPosition(0.86);
                 Outtake_right.setPosition(0.14);
                 OutDoor.setPosition(0.4);
-                Intake1.setPosition(0.83);
-                Intake2.setPosition(0.83);
+//                Intake1.setPosition(0.83);
+//                Intake2.setPosition(0.83);
 //                extend_left.setPosition(.435);
 //                extend_right.setPosition(.45);
                 plane_rotate.setPosition(0);
@@ -48,7 +69,7 @@ public class TeleOp extends GenericOpmoodeTemplate {
 
                 gamepadControlDriveTrain(Speed);
 
-                IntakeControl();
+//                IntakeControl();
 
                 OuttakeControl();
 
@@ -131,6 +152,17 @@ public class TeleOp extends GenericOpmoodeTemplate {
             IN_N_OUT.setPower(0);
             InDoor.setPower(0);
         }
+
+        if (IN_N_OUT.getCurrent(CurrentUnit.MILLIAMPS) >= 6000) {
+            if (IntakeTimer.seconds() < 1 && IntakeTimer.seconds() > 0.25) {
+                proposedBackPattern = BlinkinPattern.BLACK;
+                proposedFrontPattern = BlinkinPattern.BLACK;
+            }
+        } else if (IN_N_OUT.getCurrent(CurrentUnit.MILLIAMPS) < 6000 &&
+                Math.abs(gamepad2.right_trigger - gamepad2.left_trigger) > 0.01) {
+            IntakeTimer.reset();
+        }
+
 //        if (gamepad2.right_trigger > 0) {
 //            IN_N_OUT.setPower(-gamepad2.right_trigger);
 //        } else if (gamepad2.left_trigger > 0) {
@@ -192,6 +224,7 @@ public class TeleOp extends GenericOpmoodeTemplate {
             Outtake_left.setPosition(0.75);
             Outtake_right.setPosition(0.28);
         }
+
         if (gamepad2.right_bumper) {
             //Horizontal
             Outtake_left.setPosition(0.86);
@@ -200,7 +233,28 @@ public class TeleOp extends GenericOpmoodeTemplate {
             OutDoor.setPosition(0.4);
         }
 
+        proposedBackPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getBackRGB()));
+        proposedFrontPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getFrontRGB()));
+
+        if (proposedBackPattern != null && proposedBackPattern != currentBackPattern) {
+            IntakeTimer.reset();
+            currentBackPattern = proposedBackPattern;
+            leds.setPattern(currentBackPattern);
+        } else if (proposedBackPattern == null) {
+            currentBackPattern = defaultColor;
+            leds.setPattern(currentBackPattern);
+        }
+
+        if (proposedFrontPattern != null && proposedFrontPattern != currentFrontPattern) {
+            currentFrontPattern = proposedFrontPattern;
+            leds.setPattern(currentFrontPattern);
+        } else if (proposedFrontPattern == null) {
+            currentFrontPattern = defaultColor;
+            leds.setPattern(currentFrontPattern);
+        }
     }
+
+
 
     void ExtendControl() {
         //these two servos only operate between 0.15 and 0.85. Giving them a value outside that

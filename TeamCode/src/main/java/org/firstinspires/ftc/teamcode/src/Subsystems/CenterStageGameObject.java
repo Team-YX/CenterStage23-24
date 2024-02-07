@@ -41,8 +41,8 @@ public enum CenterStageGameObject {
             case WHITE_PIXEL:
                 return RevBlinkinLedDriver.BlinkinPattern.WHITE;
 
-            case EMPTY:
-                return RevBlinkinLedDriver.BlinkinPattern.BLACK;
+//            case EMPTY:
+//                return RevBlinkinLedDriver.BlinkinPattern.BLACK;
 
             default:
                 return null;

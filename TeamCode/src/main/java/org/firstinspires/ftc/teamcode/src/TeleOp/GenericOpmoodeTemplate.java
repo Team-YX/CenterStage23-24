@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -36,6 +37,7 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
     protected DcMotorEx IN_N_OUT;
     protected ColorRangeSensor back_color;
     protected ColorRangeSensor front_color;
+    protected RevBlinkinLedDriver leds;
 
     public void defaultInit() {
 
@@ -70,6 +72,8 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
 
         back_color = hardwareMap.get(ColorRangeSensor.class, "back_color");
         front_color = hardwareMap.get(ColorRangeSensor.class, "front_color");
+
+        leds = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
 
         front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -112,6 +116,14 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         linearSlide_right.setTargetPosition(HeightLevel.getEncoderCountFromEnum(HeightLevel.Down));
         linearSlide_right.setPower(-1);
         linearSlide_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public double[] getBackRGB() {
+        return new double[]{back_color.red(), back_color.green(), back_color.blue()};
+    }
+
+    public double[] getFrontRGB() {
+        return new double[]{front_color.red(), front_color.green(), front_color.blue()};
     }
 
     public void Zero_power() {
