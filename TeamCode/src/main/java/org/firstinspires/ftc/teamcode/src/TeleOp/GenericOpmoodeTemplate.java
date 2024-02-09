@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -12,14 +13,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
+import org.firstinspires.ftc.teamcode.src.Subsystems.Slide.HeightLevel;
 
 public abstract class GenericOpmoodeTemplate extends LinearOpMode {
 
 
     IMU imu;
-    protected Servo Intake1;
-    protected Servo Intake2;
+//    protected Servo Intake1;
+//    protected Servo Intake2;
     protected Servo Launcher;
     protected Servo plane_rotate;
     protected Servo extend_left;
@@ -35,8 +36,8 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
     protected DcMotorEx linearSlide_right;
     protected DcMotorEx linearSlide_left;
     protected DcMotorEx IN_N_OUT;
-    protected ColorRangeSensor back_color;
-    protected ColorRangeSensor front_color;
+    protected RevColorSensorV3 back_color;
+    protected RevColorSensorV3 front_color;
     protected RevBlinkinLedDriver leds;
 
     public void defaultInit() {
@@ -48,8 +49,8 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
         imu.initialize(parameters);
-        Intake1 = hardwareMap.get(Servo.class, "IntakeR");
-        Intake2 = hardwareMap.get(Servo.class, "IntakeL");
+//        Intake1 = hardwareMap.get(Servo.class, "IntakeR");
+//        Intake2 = hardwareMap.get(Servo.class, "IntakeL");
         extend_left = hardwareMap.get(Servo.class, "extendL");
         extend_right = hardwareMap.get(Servo.class, "extendR");
         Outtake_left = hardwareMap.get(Servo.class, "OuttakeL");
@@ -57,7 +58,7 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         plane_rotate = hardwareMap.get(Servo.class, "rotator");
         Launcher = hardwareMap.get(Servo.class, "Launcher");
         OutDoor = hardwareMap.get(Servo.class, "OutDoor");
-        InDoor = hardwareMap.get(CRServo.class,"InDoor");
+        InDoor = hardwareMap.get(CRServo.class, "InDoor");
 
 //      DistanceSensor dsensor2 = hardwareMap.get(DistanceSensor.class, "dsensor2");
 //      DistanceSensor dsensor1 = hardwareMap.get(DistanceSensor.class, "dsensor1");
@@ -70,8 +71,8 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         linearSlide_left = hardwareMap.get(DcMotorEx.class, "LL");
         IN_N_OUT = hardwareMap.get(DcMotorEx.class, "IN_N_OUT");
 
-        back_color = hardwareMap.get(ColorRangeSensor.class, "back_color");
-        front_color = hardwareMap.get(ColorRangeSensor.class, "front_color");
+        back_color = hardwareMap.get(RevColorSensorV3.class, "back_color");
+        front_color = hardwareMap.get(RevColorSensorV3.class, "front_color");
 
         leds = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
 
@@ -80,10 +81,13 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         back_left.setDirection(DcMotorSimple.Direction.FORWARD);
         back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        Outtake_left.setDirection(Servo.Direction.REVERSE);
+        Outtake_right.setDirection(Servo.Direction.REVERSE);
+
         OutDoor.setDirection(Servo.Direction.FORWARD);
 
-        Intake1.setDirection(Servo.Direction.FORWARD);
-        Intake2.setDirection(Servo.Direction.REVERSE);
+//        Intake1.setDirection(Servo.Direction.FORWARD);
+//        Intake2.setDirection(Servo.Direction.REVERSE);
 
         extend_right.setDirection(Servo.Direction.FORWARD);
         extend_left.setDirection(Servo.Direction.REVERSE);
@@ -100,7 +104,7 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void LinearSlide (HardwareMap hardwareMap, String slideName_left, String slideName_right) {
+    public void LinearSlide(HardwareMap hardwareMap, String slideName_left, String slideName_right) {
 
         linearSlide_left = (DcMotorEx) hardwareMap.dcMotor.get(slideName_left);
         linearSlide_right = (DcMotorEx) hardwareMap.dcMotor.get(slideName_right);
@@ -164,16 +168,16 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         }
     }
 
-    void IntakeControl() {
-        if (gamepad2.dpad_down) {
-            Intake1.setPosition(0.565);
-            Intake2.setPosition(0.565);
-        }
-        if (gamepad2.dpad_up) {
-            Intake1.setPosition(0.3);
-            Intake2.setPosition(0.3);
-        }
-    }
+//    void IntakeControl() {
+//        if (gamepad2.dpad_down) {
+//            Intake1.setPosition(0.565);
+//            Intake2.setPosition(0.565);
+//        }
+//        if (gamepad2.dpad_up) {
+//            Intake1.setPosition(0.3);
+//            Intake2.setPosition(0.3);
+//        }
+//    }
 
     void TelemetryUpdate(double Speed) {
         telemetry.addData("RUN", getRuntime());
@@ -183,7 +187,7 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
         telemetry.addData("BL_Power", back_left.getPower());
         telemetry.addData("SLide", linearSlide_left.getPower());
         telemetry.addData("IN_N_OUT", IN_N_OUT.getPower());
-        telemetry.addData("Intake", Intake1.getPosition());
+//        telemetry.addData("Intake", Intake1.getPosition());
 //                telemetry.addData("Distance1", dsensor1.getDistance(DistanceUnit.INCH));
 //                telemetry.addData("Distance2", dsensor2.getDistance(DistanceUnit.INCH));
         telemetry.addData("Speed", Speed);

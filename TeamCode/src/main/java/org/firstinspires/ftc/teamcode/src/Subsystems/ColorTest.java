@@ -30,6 +30,10 @@ public class ColorTest extends GenericOpmoodeTemplate {
 
     public void runOpMode() throws InterruptedException{
 
+        while (!isStarted() && !isStopRequested()) {
+
+        }
+
         while(opModeIsActive()){
 
             telemetry.addData("back_red", back_color.red());

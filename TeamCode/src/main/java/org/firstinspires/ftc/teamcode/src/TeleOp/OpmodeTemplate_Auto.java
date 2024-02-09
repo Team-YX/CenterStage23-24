@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -31,6 +33,9 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
     protected DcMotorEx back_left;
     protected DcMotorEx back_right;
     protected DcMotorEx IN_N_OUT;
+    protected ColorRangeSensor back_color;
+    protected ColorRangeSensor front_color;
+//    protected RevBlinkinLedDriver leds;
 
     public void defaultInit() {
 
@@ -60,6 +65,8 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         back_left = hardwareMap.get(DcMotorEx.class, "BL");
         back_right = hardwareMap.get(DcMotorEx.class, "BR");
         IN_N_OUT = hardwareMap.get(DcMotorEx.class, "IN_N_OUT");
+        back_color = hardwareMap.get(ColorRangeSensor.class, "back_color");
+        front_color = hardwareMap.get(ColorRangeSensor.class, "front_color");
 
         front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -67,6 +74,9 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         OutDoor.setDirection(Servo.Direction.FORWARD);
+
+        Outtake_left.setDirection(Servo.Direction.REVERSE);
+        Outtake_right.setDirection(Servo.Direction.REVERSE);
 
         Intake1.setDirection(Servo.Direction.FORWARD);
         Intake2.setDirection(Servo.Direction.REVERSE);
@@ -81,7 +91,10 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+//        leds = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
     }
+
 
     public void Zero_power() {
         front_left.setPower(0);

@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -45,6 +46,11 @@ public class R_Far_Corner extends OpmodeTemplate_Auto {
 
     @Override
     public void runOpMode() {
+        RevBlinkinLedDriver.BlinkinPattern defaultColor;
+
+        defaultColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+
+//        leds.setPattern(defaultColor);
 
         Slide_left = new LinearSlide(hardwareMap, "RL");
         Slide_right = new LinearSlide(hardwareMap, "LL");
@@ -88,8 +94,10 @@ public class R_Far_Corner extends OpmodeTemplate_Auto {
 
         while (!isStarted() && !isStopRequested()) {
 
-            Intake1.setPosition(0.83);//.54 down
-            Intake2.setPosition(0.83);
+            Outtake_left.setPosition(0.9);//0.86
+            Outtake_right.setPosition(0.1);//0.14
+//            Intake1.setPosition(0.83);//.54 down
+//            Intake2.setPosition(0.83);
             plane_rotate.setPosition(0);
             Launcher.setPosition(0.34);
 //            Outtake_left.setPosition(0.75);

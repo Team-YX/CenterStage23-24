@@ -45,6 +45,11 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
 
     @Override
     public void runOpMode() {
+//        RevBlinkinLedDriver.BlinkinPattern defaultColor;
+//
+//        defaultColor = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+//
+//        leds.setPattern(defaultColor);
 
         Slide_left = new LinearSlide(hardwareMap, "RL");
         Slide_right = new LinearSlide(hardwareMap, "LL");
@@ -89,8 +94,10 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
 
         while (!isStarted() && !isStopRequested()) {
 
-            Intake1.setPosition(0.83);//.54 down
-            Intake2.setPosition(0.83);
+            Outtake_left.setPosition(0.9);//0.86
+            Outtake_right.setPosition(0.1);//0.14
+//            Intake1.setPosition(0.83);//.54 down
+//            Intake2.setPosition(0.83);
             plane_rotate.setPosition(0);
             Launcher.setPosition(0.34);
 //            Outtake_left.setPosition(0.75);
@@ -139,9 +146,9 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
-                        .forward(3)
+//                        .forward(3)
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
-                        .lineToConstantHeading(new Vector2d(-20, 35))
+                        .lineToConstantHeading(new Vector2d(-25, 35))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .addDisplacementMarker(() -> {
                             Slide_right.setTargetLevel(HeightLevel.MediumJunction);
@@ -151,8 +158,8 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
                         .back(5)
                         .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.5);
-                            Outtake_right.setPosition(0.52);
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.25);
                         })
                         .waitSeconds(1)
                         .build();
@@ -168,8 +175,8 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
                             OutDoor.setPosition(0.4);
                         })
                         .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.75);
-                            Outtake_right.setPosition(0.28);
+                            Outtake_left.setPosition(0.9);
+                            Outtake_right.setPosition(0.1);
                         })
                         .addDisplacementMarker(() -> {
                             Slide_right.setTargetLevel(HeightLevel.Down);
