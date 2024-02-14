@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.src.Subsystems;
+package org.firstinspires.ftc.teamcode.src.Subsystems.LED;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.src.TeleOp.GenericOpmoodeTemplate;
+import org.firstinspires.ftc.teamcode.src.Subsystems.LED.CenterStageGameObject;
+import org.firstinspires.ftc.teamcode.src.TeleOp.Templates.GenericOpmoodeTemplate;
 
 @TeleOp(name = "ColorTest")
 public class ColorTest extends GenericOpmoodeTemplate {

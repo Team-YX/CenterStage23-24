@@ -11,24 +11,26 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.src.Subsystems.Location;
+import org.firstinspires.ftc.teamcode.src.Subsystems.LED.Location;
+import org.firstinspires.ftc.teamcode.src.Subsystems.Slide.HeightLevel;
 import org.firstinspires.ftc.teamcode.src.Subsystems.Slide.LinearSlide;
-import org.firstinspires.ftc.teamcode.src.TeleOp.GenericOpmoodeTemplate;
-import org.firstinspires.ftc.teamcode.src.TeleOp.OpmodeTemplate_Auto;
-import org.firstinspires.ftc.teamcode.src.vision.PipeLine_BLUE;
+import org.firstinspires.ftc.teamcode.src.TeleOp.Templates.OpmodeTemplate_Auto;
+import org.firstinspires.ftc.teamcode.src.Vision.ColorDetection.PipeLine_RED;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
-@Autonomous(name = "✝\uD83D\uDFE6 Far-Corner \uD83D\uDFE6✝", group = "COMPETITION")
+@Autonomous(name = "✝\uD83D\uDFE5 Far-Corner\uD83D\uDFE5✝", group = "COMPETITION")
 
-public class B_Far_Corner extends OpmodeTemplate_Auto {
+public class R_Far extends OpmodeTemplate_Auto {
+
     private OpenCvCamera webcam;
     Location lcr;
-    private LinearSlide Slide_right;
-    private LinearSlide Slide_left;
+    LinearSlide Slide_right;
+    LinearSlide Slide_left;
+
 
     private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
     private static final int CAMERA_HEIGHT = 176; // height of wanted camera resolution
@@ -39,7 +41,7 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
     public static double borderBottomY = 0.0;   //fraction of pixels from the bottom of the cam to skip
 
     // RED Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 60, 150);
+    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
 
     @Override
@@ -61,8 +63,8 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         //OpenCV Pipeline
-        PipeLine_BLUE myPipeline;
-        webcam.setPipeline(myPipeline = new PipeLine_BLUE(borderLeftX, borderRightX, borderTopY, borderBottomY));
+        PipeLine_RED myPipeline;
+        webcam.setPipeline(myPipeline = new PipeLine_RED(borderLeftX, borderRightX, borderTopY, borderBottomY));
 
         // Configuration of Pipeline
         myPipeline.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
@@ -73,7 +75,7 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -88,7 +90,6 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(webcam, 10);
-
         telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
@@ -103,7 +104,6 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
 //            Outtake_right.setPosition(0.28);
             OutDoor.setPosition(0.4);
 
-
             if (myPipeline.getRectMidpointX() > 200 && myPipeline.getRectArea() > 1000) {
                 lcr = Location.RIGHT;
             } else if (myPipeline.getRectMidpointX() > 110 && myPipeline.getRectMidpointX() < 200 && myPipeline.getRectArea() > 1000) {
@@ -117,10 +117,8 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
             telemetry.addLine(lcr.toString());
             telemetry.addData("RectArea: ", myPipeline.getRectArea());
             telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
-            telemetry.addData("lcr", lcr);
             telemetry.update();
         }
-
 
         myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
 
@@ -128,194 +126,200 @@ public class B_Far_Corner extends OpmodeTemplate_Auto {
             case UNKNOWN:
             case RIGHT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .lineToConstantHeading(new Vector2d(26, -14))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .back(10)
-                        .strafeLeft(13)
-                        .forward(25)
+                        .back(3)
+                        .splineTo(new Vector2d(-32, -2), Math.toRadians(-90))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .waitSeconds(1.5)
                         .build();
-                TrajectorySequence Middle = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(56, -3.5, Math.toRadians(83)))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .forward(65)
-                        .waitSeconds(0.5)
+                TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(.5);
+                        })
+                        .waitSeconds(3)
+                        .build();
+                TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(0);
+                        })
+                        .lineToLinearHeading(new Pose2d(-52, -3, Math.toRadians(-90)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .back(65)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
-                        .lineToLinearHeading(new Pose2d(36, 86.5, Math.toRadians(260)))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 15.30))
-                        .back(1.5)
+                        .lineToConstantHeading(new Vector2d(-24, 90))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .addDisplacementMarker(() -> {
+                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                        })
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
+                        .back(7)
                         .addDisplacementMarker(() -> {
-//                            linearSlide_left.setPower(0.5);
-//                            linearSlide_right.setPower(0.5);
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.25);
                         })
-                        .waitSeconds(2.2)
                         .build();
                 TrajectorySequence Score2 = drive.trajectorySequenceBuilder(Score1.end())
                         .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.5);
-                            Outtake_right.setPosition(0.52);
+                            OutDoor.setPosition(0.1);
                         })
                         .waitSeconds(1)
                         .build();
-                TrajectorySequence Score3 = drive.trajectorySequenceBuilder(Score2.end())
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score2.end())
+                        .forward(5)
                         .addDisplacementMarker(() -> {
                             OutDoor.setPosition(0.4);
                         })
-                        .waitSeconds(1)
-                        .build();
-                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score3.end())
                         .addDisplacementMarker(() -> {
-//                            linearSlide_left.setPower(-0.3);
-//                            linearSlide_right.setPower(-0.3);
+                            Outtake_left.setPosition(0.9);
+                            Outtake_right.setPosition(0.1);
                         })
                         .addDisplacementMarker(() -> {
-                            OutDoor.setPosition(0.1);
+                            Slide_right.setTargetLevel(HeightLevel.Down);
+                            Slide_left.setTargetLevel(HeightLevel.Down);
                         })
-                        .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.75);
-                            Outtake_right.setPosition(0.28);
-                        })
-                        .forward(15)
-                        .lineToConstantHeading(new Vector2d(5, 86.5))
-                        .back(15)
                         .build();
                 drive.followTrajectorySequence(To_Marker);
+                drive.followTrajectorySequence(Drop);
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score1);
                 drive.followTrajectorySequence(Score2);
-                drive.followTrajectorySequence(Score3);
                 drive.followTrajectorySequence(Park);
                 break;
             }
 
             case CENTER: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .lineToConstantHeading(new Vector2d(33, 0))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .back(10)
-                        .strafeRight(13)
-                        .forward(20)
+                        .lineToConstantHeading(new Vector2d(-50, 0))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .waitSeconds(1.5)
                         .build();
-                TrajectorySequence Middle = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(56, -3.5, Math.toRadians(90)))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .forward(65)
+                TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(.5);
+                        })
+                        .waitSeconds(3)
+                        .build();
+                TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(0);
+                        })
+                        .lineToLinearHeading(new Pose2d(-52, -3, Math.toRadians(-90)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .back(65)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
-                        .lineToLinearHeading(new Pose2d(29.5, 86.5, Math.toRadians(260)))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 15.30))
-                        .back(1.5)
+                        .lineToConstantHeading(new Vector2d(-28, 90))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .addDisplacementMarker(() -> {
+                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                        })
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
+                        .back(7)
                         .addDisplacementMarker(() -> {
-//                            linearSlide_left.setPower(0.5);
-//                            linearSlide_right.setPower(0.5);
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.25);
                         })
-                        .waitSeconds(2.2)
                         .build();
                 TrajectorySequence Score2 = drive.trajectorySequenceBuilder(Score1.end())
                         .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.5);
-                            Outtake_right.setPosition(0.52);
+                            OutDoor.setPosition(0.1);
                         })
                         .waitSeconds(1)
                         .build();
-                TrajectorySequence Score3 = drive.trajectorySequenceBuilder(Score2.end())
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score2.end())
+                        .forward(5)
                         .addDisplacementMarker(() -> {
                             OutDoor.setPosition(0.4);
                         })
-                        .waitSeconds(1)
-                        .build();
-                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score3.end())
                         .addDisplacementMarker(() -> {
-//                            linearSlide_left.setPower(-0.3);
-//                            linearSlide_right.setPower(-0.3);
+                            Outtake_left.setPosition(0.9);
+                            Outtake_right.setPosition(0.1);
                         })
                         .addDisplacementMarker(() -> {
-                            OutDoor.setPosition(0.1);
+                            Slide_right.setTargetLevel(HeightLevel.Down);
+                            Slide_left.setTargetLevel(HeightLevel.Down);
                         })
-                        .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.75);
-                            Outtake_right.setPosition(0.28);
-                        })
-                        .forward(15)
-                        .lineToConstantHeading(new Vector2d(7, 85))
-                        .back(15)
                         .build();
                 drive.followTrajectorySequence(To_Marker);
+                drive.followTrajectorySequence(Drop);
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score1);
                 drive.followTrajectorySequence(Score2);
-                drive.followTrajectorySequence(Score3);
                 drive.followTrajectorySequence(Park);
                 break;
             }
             case LEFT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .splineTo(new Vector2d(26.5, 7), Math.toRadians(90))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .back(10)
+                        .lineToConstantHeading(new Vector2d(-48, -11))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .waitSeconds(1.5)
                         .build();
-                TrajectorySequence Middle = drive.trajectorySequenceBuilder(To_Marker.end())
-                        .lineToLinearHeading(new Pose2d(56, -3.5, Math.toRadians(80)))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(35, 35, 15.30))
-                        .forward(65)
-                        .waitSeconds(0.5)
+                TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(.5);
+                        })
+                        .waitSeconds(3)
+                        .build();
+                TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
+                        .addDisplacementMarker(() -> {
+                            IN_N_OUT.setPower(0);
+                        })
+                        .lineToLinearHeading(new Pose2d(-52, -3, Math.toRadians(-90)))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .back(65)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
-                        .lineToLinearHeading(new Pose2d(26, 85, Math.toRadians(260)))
-                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 15.30))
-                        .back(3)
+                        .lineToConstantHeading(new Vector2d(-36.5, 90))
+                        .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
+                        .addDisplacementMarker(() -> {
+                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                        })
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
+                        .back(7)
                         .addDisplacementMarker(() -> {
-//                            linearSlide_left.setPower(0.5);
-//                            linearSlide_right.setPower(0.5);
+                            Outtake_left.setPosition(0.75);
+                            Outtake_right.setPosition(0.25);
                         })
-                        .waitSeconds(2.2)
                         .build();
                 TrajectorySequence Score2 = drive.trajectorySequenceBuilder(Score1.end())
                         .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.5);
-                            Outtake_right.setPosition(0.52);
+                            OutDoor.setPosition(0.1);
                         })
                         .waitSeconds(1)
                         .build();
-                TrajectorySequence Score3 = drive.trajectorySequenceBuilder(Score2.end())
+                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score2.end())
+                        .forward(5)
                         .addDisplacementMarker(() -> {
                             OutDoor.setPosition(0.4);
                         })
-                        .waitSeconds(1)
-                        .build();
-                TrajectorySequence Park = drive.trajectorySequenceBuilder(Score3.end())
                         .addDisplacementMarker(() -> {
-//                            linearSlide_left.setPower(-0.3);
-//                            linearSlide_right.setPower(-0.3);
+                            Outtake_left.setPosition(0.9);
+                            Outtake_right.setPosition(0.1);
                         })
                         .addDisplacementMarker(() -> {
-                            OutDoor.setPosition(0.1);
+                            Slide_right.setTargetLevel(HeightLevel.Down);
+                            Slide_left.setTargetLevel(HeightLevel.Down);
                         })
-                        .addDisplacementMarker(() -> {
-                            Outtake_left.setPosition(0.75);
-                            Outtake_right.setPosition(0.28);
-                        })
-                        .forward(15)
-                        .lineToConstantHeading(new Vector2d(5, 86.5))
-                        .back(15)
                         .build();
                 drive.followTrajectorySequence(To_Marker);
+                drive.followTrajectorySequence(Drop);
                 drive.followTrajectorySequence(Middle);
                 drive.followTrajectorySequence(To_BackBoard);
                 drive.followTrajectorySequence(Score1);
                 drive.followTrajectorySequence(Score2);
-                drive.followTrajectorySequence(Score3);
                 drive.followTrajectorySequence(Park);
                 break;
             }
         }
     }
 }
+
+

@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.src.Subsystems.Slide;
 public enum HeightLevel {
     UnderGround,
     Down,
-    LowJunction,
-    MediumJunction,
-    HighJunction,
+    HIGH_HIGH,
+    HIGH_HIGH_HIGH,
+    HIGH,
     FCones,
     TCones;
 
@@ -16,12 +16,12 @@ public enum HeightLevel {
     //TODO: change the encoder heights
     private static int getEncoderCountFromLevel(HeightLevel level) {
         switch (level) {
-            case HighJunction:
-                return 1550;
-            case MediumJunction:
-                return 1000;
-            case LowJunction:
-                return 575;
+            case HIGH:
+                return 2920;
+            case HIGH_HIGH_HIGH:
+                return 3250;
+            case HIGH_HIGH:
+                return 3100;
             case FCones:
                 return 211;
             case TCones:
@@ -72,11 +72,11 @@ public enum HeightLevel {
 
             case Down:
                 return 0;
-            case LowJunction:
+            case HIGH_HIGH:
                 return 1;
-            case MediumJunction:
+            case HIGH_HIGH_HIGH:
                 return 2;
-            case HighJunction:
+            case HIGH:
                 return 3;
         }
         return 0;
@@ -87,15 +87,15 @@ public enum HeightLevel {
             case 0:
                 return Down;
             case 1:
-                return LowJunction;
+                return HIGH_HIGH;
             case 2:
-                return MediumJunction;
+                return HIGH_HIGH_HIGH;
             case 3:
-                return HighJunction;
+                return HIGH;
         }
 
         if (value > 3) {
-            return HighJunction;
+            return HIGH;
         }
         return Down;
 

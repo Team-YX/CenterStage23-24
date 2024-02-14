@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.TeleOp;
+package org.firstinspires.ftc.teamcode.src.TeleOp.Templates;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -18,8 +18,8 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
 
 
     IMU imu;
-    protected Servo Intake1;
-    protected Servo Intake2;
+//    protected Servo Intake1;
+//    protected Servo Intake2;
     protected Servo Launcher;
     protected Servo plane_rotate;
     protected Servo extend_left;
@@ -46,8 +46,8 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
         imu.initialize(parameters);
-        Intake1 = hardwareMap.get(Servo.class, "IntakeR");
-        Intake2 = hardwareMap.get(Servo.class, "IntakeL");
+//        Intake1 = hardwareMap.get(Servo.class, "IntakeR");
+//        Intake2 = hardwareMap.get(Servo.class, "IntakeL");
         extend_left = hardwareMap.get(Servo.class, "extendL");
         extend_right = hardwareMap.get(Servo.class, "extendR");
         Outtake_left = hardwareMap.get(Servo.class, "OuttakeL");
@@ -77,9 +77,6 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
 
         Outtake_left.setDirection(Servo.Direction.REVERSE);
         Outtake_right.setDirection(Servo.Direction.REVERSE);
-
-        Intake1.setDirection(Servo.Direction.FORWARD);
-        Intake2.setDirection(Servo.Direction.REVERSE);
 
         extend_right.setDirection(Servo.Direction.FORWARD);
         extend_left.setDirection(Servo.Direction.REVERSE);
@@ -129,16 +126,16 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         }
     }
 
-    void IntakeControl() {
-        if (gamepad2.dpad_down) {
-            Intake1.setPosition(0.565);
-            Intake2.setPosition(0.565);
-        }
-        if (gamepad2.dpad_up) {
-            Intake1.setPosition(0.3);
-            Intake2.setPosition(0.3);
-        }
-    }
+//    void IntakeControl() {
+//        if (gamepad2.dpad_down) {
+//            Intake1.setPosition(0.565);
+//            Intake2.setPosition(0.565);
+//        }
+//        if (gamepad2.dpad_up) {
+//            Intake1.setPosition(0.3);
+//            Intake2.setPosition(0.3);
+//        }
+//    }
 
     void TelemetryUpdate(double Speed) {
         telemetry.addData("RUN", getRuntime());
@@ -147,7 +144,7 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         telemetry.addData("BR_Power", back_right.getPower());
         telemetry.addData("BL_Power", back_left.getPower());
         telemetry.addData("IN_N_OUT", IN_N_OUT.getPower());
-        telemetry.addData("Intake", Intake1.getPosition());
+//        telemetry.addData("Intake", Intake1.getPosition());
 //                telemetry.addData("Distance1", dsensor1.getDistance(DistanceUnit.INCH));
 //                telemetry.addData("Distance2", dsensor2.getDistance(DistanceUnit.INCH));
         telemetry.addData("Speed", Speed);

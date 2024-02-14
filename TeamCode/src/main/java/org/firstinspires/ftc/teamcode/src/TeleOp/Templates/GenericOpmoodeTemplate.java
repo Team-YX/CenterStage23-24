@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.TeleOp;
+package org.firstinspires.ftc.teamcode.src.TeleOp.Templates;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -89,8 +89,8 @@ public abstract class GenericOpmoodeTemplate extends LinearOpMode {
 //        Intake1.setDirection(Servo.Direction.FORWARD);
 //        Intake2.setDirection(Servo.Direction.REVERSE);
 
-        extend_right.setDirection(Servo.Direction.FORWARD);
-        extend_left.setDirection(Servo.Direction.REVERSE);
+        extend_right.setDirection(Servo.Direction.REVERSE);
+        extend_left.setDirection(Servo.Direction.FORWARD);
 
         plane_rotate.setDirection(Servo.Direction.FORWARD);
         Launcher.setDirection(Servo.Direction.REVERSE);

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.src.TeleOp.Templates.GenericOpmoodeTemplate;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,18 +22,6 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
 
     private final ElapsedTime IntakeTimer = new ElapsedTime();
 
-//    protected BlinkinPattern defaultColor;
-//    protected BlinkinPattern currentBackPattern;
-//    protected BlinkinPattern currentFrontPattern;
-//    protected BlinkinPattern proposedBackPattern;
-//    protected BlinkinPattern proposedFrontPattern;
-
-//    public RedTeleOp() {
-//        defaultColor = BlinkinPattern.RED;
-//        currentBackPattern = this.defaultColor;
-//        currentFrontPattern = this.defaultColor;
-//    }
-
     boolean Ydepressed = true;
     boolean Xdepresssed = true;
     boolean BackDepressed = true;
@@ -43,11 +32,9 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
             double Speed = 1;
             defaultInit();
 
-//            leds.setPattern(currentBackPattern);
-
             while (!isStarted() && !isStopRequested()) {
-                Outtake_left.setPosition(0.86);
-                Outtake_right.setPosition(0.14);
+                Outtake_left.setPosition(0.97);
+                Outtake_right.setPosition(0.03);
                 OutDoor.setPosition(0.4);
 //                Intake1.setPosition(0.83);
 //                Intake2.setPosition(0.83);
@@ -95,7 +82,7 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
     }
 
     void Door() {
-        if (gamepad2.y == false) {
+        if (!gamepad2.y) {
             Ydepressed = true;
         }
         if (gamepad2.y && Ydepressed) {
@@ -129,17 +116,16 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
             IN_N_OUT.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
 
             if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.b) {
-                OutDoor.setPosition(0.4);
-                Outtake_left.setPosition(0.86);
-                Outtake_right.setPosition(0.14);
+                OutDoor.setPosition(0.1);
+                Outtake_left.setPosition(0.97);
+                Outtake_right.setPosition(0.03);
 
                 sleep(75);
 
                 InDoor.setDirection(DcMotorSimple.Direction.FORWARD);
                 InDoor.setPower(1);
             } else if (gamepad2.left_trigger > gamepad2.right_trigger && gamepad2.b) {
-                InDoor.setDirection(DcMotorSimple.Direction.REVERSE);
-                InDoor.setPower(1);
+                InDoor.setPower(-1);
             } else {
                 InDoor.setDirection(DcMotorSimple.Direction.FORWARD);
                 InDoor.setPower(0);
@@ -148,28 +134,18 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
             IN_N_OUT.setPower(0);
             InDoor.setPower(0);
         }
-
         if (IN_N_OUT.getCurrent(CurrentUnit.MILLIAMPS) >= 6000) {
-            if (IntakeTimer.seconds() < 1 && IntakeTimer.seconds() > 0.25) {
-//                proposedBackPattern = BlinkinPattern.BLACK;
-//                proposedFrontPattern = BlinkinPattern.BLACK;
+            if (IntakeTimer.seconds() < 1) {
+                IntakeTimer.seconds();
             }
         } else if (IN_N_OUT.getCurrent(CurrentUnit.MILLIAMPS) < 6000 &&
                 Math.abs(gamepad2.right_trigger - gamepad2.left_trigger) > 0.01) {
             IntakeTimer.reset();
         }
-
-//        if (gamepad2.right_trigger > 0) {
-//            IN_N_OUT.setPower(-gamepad2.right_trigger);
-//        } else if (gamepad2.left_trigger > 0) {
-//            IN_N_OUT.setPower(gamepad2.left_trigger);
-//        } else {
-//            IN_N_OUT.setPower(0);
-//        }
     }
 
     void LauncherControl() {
-        if (gamepad2.x == false) {
+        if (!gamepad2.x) {
             Xdepresssed = true;
         }
         if (gamepad2.x && Xdepresssed) {
@@ -181,7 +157,7 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
             Xdepresssed = false;
         }
 
-        if (gamepad2.back == false) {
+        if (!gamepad2.back) {
             BackDepressed = true;
         }
         if (gamepad2.back && BackDepressed) {
@@ -194,17 +170,6 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
         }
     }
 
-//    void IntakeControl() {
-//        if (gamepad2.dpad_down) {
-//            Intake1.setPosition(.54);
-//            Intake2.setPosition(.54);
-//        }
-//        if (gamepad2.dpad_up) {
-//            Intake1.setPosition(.71);
-//            Intake2.setPosition(.71);
-//        }
-//    }
-
     void OuttakeControl() {
         //Scoring
 //        if (gamepad2.left_bumper) {
@@ -212,44 +177,21 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
 //            Outtake_right.setPosition(0.52);
 //        }
         if (gamepad2.a) {
-            //Middle
-//            Intake1.setPosition(.54);
-//            Intake2.setPosition(.54);
 
-            OutDoor.setPosition(0.1);
+            //Outtake
+            OutDoor.setPosition(0.4);
             Outtake_left.setPosition(0.75);
             Outtake_right.setPosition(0.28);
         }
 
         if (gamepad2.right_bumper) {
-            //Horizontal
-            Outtake_left.setPosition(0.86);
-            Outtake_right.setPosition(0.14);
 
-            OutDoor.setPosition(0.4);
+            //Outtake Horizontal and door open
+            Outtake_left.setPosition(0.97);
+            Outtake_right.setPosition(0.03);
+            OutDoor.setPosition(0.1);
         }
-
-//        proposedBackPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getBackRGB()));
-//        proposedFrontPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getFrontRGB()));
-//
-//        if (proposedBackPattern != null && proposedBackPattern != currentBackPattern) {
-//            IntakeTimer.reset();
-//            currentBackPattern = proposedBackPattern;
-//            leds.setPattern(currentBackPattern);
-//        } else if (proposedBackPattern == null) {
-//            currentBackPattern = defaultColor;
-//            leds.setPattern(currentBackPattern);
-//        }
-//
-//        if (proposedFrontPattern != null && proposedFrontPattern != currentFrontPattern) {
-//            currentFrontPattern = proposedFrontPattern;
-//            leds.setPattern(currentFrontPattern);
-//        } else if (proposedFrontPattern == null) {
-//            currentFrontPattern = defaultColor;
-//            leds.setPattern(currentFrontPattern);
-//        }
     }
-
 
     void ExtendControl() {
         //these two servos only operate between 0.15 and 0.85. Giving them a value outside that
@@ -267,8 +209,6 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
     void TelemetryUpdate(double Speed) {
         telemetry.addData("RUN", getRuntime());
 
-//        telemetry.addData("inr", Intake1.getPosition());
-//        telemetry.addData("inl", Intake2.getPosition());
         telemetry.addData("outL", Outtake_left.getPosition());
         telemetry.addData("outR", Outtake_right.getPosition());
         telemetry.addData("lunch", Launcher.getPosition());
@@ -284,8 +224,6 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
         telemetry.addData("SLide", linearSlide_left.getPower());
         telemetry.addData("IN_N_OUT", IN_N_OUT.getPower());
         telemetry.addData("IN_N_OUT", IN_N_OUT.getCurrent(CurrentUnit.AMPS));
-//      telemetry.addData("Distance1", dsensor1.getDistance(DistanceUnit.INCH));
-//      telemetry.addData("Distance2", dsensor2.getDistance(DistanceUnit.INCH));
         telemetry.addData("Speed", Speed);
         telemetry.update();
     }

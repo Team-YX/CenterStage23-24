@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.src.Subsystems.Slide;
 
-import android.transition.Slide;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -20,12 +18,12 @@ public class linearslidetest extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad1.dpad_up) {
-                Slide_left.setTargetLevel(HeightLevel.HighJunction);
-                Slide_right.setTargetLevel(HeightLevel.HighJunction);
+                Slide_left.setTargetLevel(HeightLevel.HIGH);
+                Slide_right.setTargetLevel(HeightLevel.HIGH);
             }
             if (gamepad1.dpad_down) {
-                Slide_left.setTargetLevel(HeightLevel.MediumJunction);
-                Slide_right.setTargetLevel(HeightLevel.MediumJunction);
+                Slide_left.setTargetLevel(HeightLevel.Down);
+                Slide_right.setTargetLevel(HeightLevel.Down);
             }
         }
     }

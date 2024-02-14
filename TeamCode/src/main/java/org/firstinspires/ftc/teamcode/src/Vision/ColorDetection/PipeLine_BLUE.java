@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.vision;
+package org.firstinspires.ftc.teamcode.src.Vision.ColorDetection;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,25 +14,13 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-// Credits to team 7303 RoboAvatars, adjusted by team 3954 Pink to the Future
 
-public class PipeLine_RED extends OpenCvPipeline {
-    Scalar HOT_PINK = new Scalar(196, 23, 112);
+public class PipeLine_BLUE extends OpenCvPipeline {
+    Scalar BLUE = new Scalar(0, 128, 255);
 
-    // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 150.0, 120.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
-
-    // Yellow, freight or ducks!
-    //public static Scalar scalarLowerYCrCb = new Scalar(0.0, 100.0, 0.0);
-    //public static Scalar scalarUpperYCrCb = new Scalar(255.0, 170.0, 120.0);
-
-    // Green                                             Y      Cr     Cb
-    // public static Scalar scalarLowerYCrCb = new Scalar(  0.0, 0.0, 0.0);
-    // public static Scalar scalarUpperYCrCb = new Scalar(255.0, 120.0, 120.0);
-
-    // Use this picture for you own color https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022/blob/main/YCbCr.jpeg
-    // Note that the Cr and Cb values range between 0-255. this means that the origin of the coordinate system is (128,128)
+//    // BLUE                        Y      Cr     Cb    (Do not change Y)
+    public static Scalar scalarLowerYCrCb = new Scalar(0, 60, 150);
+    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255, 255);
 
     // Volatile because accessed by OpMode without sync
     public volatile boolean error = false;
@@ -59,7 +47,7 @@ public class PipeLine_RED extends OpenCvPipeline {
 
     private final Object sync = new Object();
 
-    public PipeLine_RED(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
+    public PipeLine_BLUE(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
         this.borderLeftX = borderLeftX;
         this.borderRightX = borderRightX;
         this.borderTopY = borderTopY;
@@ -160,7 +148,7 @@ public class PipeLine_RED extends OpenCvPipeline {
                     (int) (borderTopY * CAMERA_HEIGHT),
                     (int) (CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH) - (borderLeftX * CAMERA_WIDTH)),
                     (int) (CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT) - (borderTopY * CAMERA_HEIGHT))
-            ), HOT_PINK, 2);
+            ), BLUE, 2);
 
             // Display Data
             Imgproc.putText(input, "Area: " + getRectArea() + " Midpoint: " + getRectMidpointXY().x + " , " + getRectMidpointXY().y, new Point(5, CAMERA_HEIGHT - 5), 0, 0.6, new Scalar(255, 255, 255), 2);

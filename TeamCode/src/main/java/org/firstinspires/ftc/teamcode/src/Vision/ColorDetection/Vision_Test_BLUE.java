@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.src.vision;
+package org.firstinspires.ftc.teamcode.src.Vision.ColorDetection;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -16,13 +16,13 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
 //Disable if not using FTC Dashboard https://github.com/PinkToTheFuture/OpenCV_FreightFrenzy_2021-2022#opencv_freightfrenzy_2021-2022
-@Autonomous(name = "Vision_Test_RED", group = "TEST")
+@Autonomous(name = "Vision_Test_BLUE", group = "TEST")
 
-public class Vision_Test_RED extends LinearOpMode {
+public class Vision_Test_BLUE extends LinearOpMode {
     private OpenCvCamera webcam;
 
-    private static final int CAMERA_WIDTH = 320; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 180; // height of wanted camera resolution
+    private static final int CAMERA_WIDTH = 160; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 90; // height of wanted camera resolution
 
     private double CrLowerUpdate = 160;
     private double CbLowerUpdate = 100;
@@ -37,9 +37,9 @@ public class Vision_Test_RED extends LinearOpMode {
     private double lowerruntime = 0;
     private double upperruntime = 0;
 
-    // Pink Range                                      Y      Cr     Cb
-    public static Scalar scalarLowerYCrCb = new Scalar(0.0, 160.0, 100.0);
-    public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
+    // BLue Range                                      Y      Cr     Cb
+    public static Scalar scalarLowerYCrCb = new Scalar(0, 60, 150);
+    public static Scalar scalarUpperYCrCb = new Scalar(255, 150, 255);
 
     static final Rect Left = new Rect(
             new Point(60, 35), new Point(120, 75));
@@ -57,8 +57,8 @@ public class Vision_Test_RED extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         //OpenCV Pipeline
-        PipeLine_RED myPipeline;
-        webcam.setPipeline(myPipeline = new PipeLine_RED(borderLeftX, borderRightX, borderTopY, borderBottomY));
+        PipeLine_BLUE myPipeline;
+        webcam.setPipeline(myPipeline = new PipeLine_BLUE(borderLeftX, borderRightX, borderTopY, borderBottomY));
         // Configuration of Pipeline
         myPipeline.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
         myPipeline.configureScalarUpper(scalarUpperYCrCb.val[0], scalarUpperYCrCb.val[1], scalarUpperYCrCb.val[2]);
@@ -82,22 +82,7 @@ public class Vision_Test_RED extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(webcam, 10);
 
         telemetry.update();
-
-        while (!isStarted() && !isStopRequested()) {
-
-            if (myPipeline.getRectMidpointX() < 110) {
-                AUTONOMOUS_C();
-            } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
-                AUTONOMOUS_B();
-            } else if (myPipeline.getRectMidpointX() > 200) {
-                AUTONOMOUS_A();
-            }
-            telemetry.addData("RectArea: ", myPipeline.getRectArea());
-            telemetry.addData("X", myPipeline.getRectX());
-            telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
-            telemetry.addData("MidPoint", myPipeline.getRectHeight());
-            telemetry.update();
-        }
+        waitForStart();
 
         while (opModeIsActive()) {
             myPipeline.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
@@ -114,8 +99,8 @@ public class Vision_Test_RED extends LinearOpMode {
 
             telemetry.update();
 
-            if (myPipeline.getRectArea() > 1000) {
-                if (myPipeline.getRectMidpointX() < 110) {
+            if (myPipeline.getRectArea() > 2000) {
+                if (myPipeline.getRectMidpointX() < 100) {
                     AUTONOMOUS_C();
                 } else if (myPipeline.getRectMidpointX() > 150 && myPipeline.getRectMidpointX() < 200) {
                     AUTONOMOUS_B();
@@ -126,7 +111,7 @@ public class Vision_Test_RED extends LinearOpMode {
         }
     }
 
-    public void testing(PipeLine_RED myPipeline) {
+    public void testing(PipeLine_BLUE myPipeline) {
         if (lowerruntime + 0.05 < getRuntime()) {
             CrLowerUpdate += -gamepad1.left_stick_y;
             CbLowerUpdate += gamepad1.left_stick_x;

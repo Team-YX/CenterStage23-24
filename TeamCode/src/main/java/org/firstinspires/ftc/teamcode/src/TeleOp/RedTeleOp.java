@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.src.TeleOp;
 
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver.BlinkinPattern;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.src.Subsystems.CenterStageGameObject;
-
+import org.firstinspires.ftc.teamcode.src.Subsystems.LED.CenterStageGameObject;
+import org.firstinspires.ftc.teamcode.src.TeleOp.Templates.GenericOpmoodeTemplate;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -43,53 +41,48 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        try {
 
-            double Speed = 1;
-            defaultInit();
+        double Speed = 1;
+        defaultInit();
 
-            while (!isStarted() && !isStopRequested()) {
-                leds.setPattern(currentBackPattern);
-
-                Outtake_left.setPosition(0.86);
-                Outtake_right.setPosition(0.14);
-                OutDoor.setPosition(0.4);
+        Outtake_left.setPosition(0.97);
+        Outtake_right.setPosition(0.03);
+        OutDoor.setPosition(0.4);
 //                Intake1.setPosition(0.83);
 //                Intake2.setPosition(0.83);
-//                extend_left.setPosition(.435);
-//                extend_right.setPosition(.45);
-                plane_rotate.setPosition(0);
-                Launcher.setPosition(0.425);
-            }
+        extend_left.setPosition(.825);
+        extend_right.setPosition(.825);
+        plane_rotate.setPosition(0);
+        Launcher.setPosition(0.425);
+        leds.setPattern(currentFrontPattern);
 
-            while (opModeIsActive()) {
-                if (gamepad1.y) {
-                    Speed = 1;
-                } else Speed = 0.6 + gamepad1.right_trigger / 2;
+        waitForStart();
 
-                gamepadControlDriveTrain(Speed);
+
+        while (opModeIsActive()) {
+            if (gamepad1.y) {
+                Speed = 1;
+            } else Speed = 0.6 + gamepad1.right_trigger / 2;
+
+            gamepadControlDriveTrain(Speed);
 
 //                IntakeControl();
 
 //                OuttakeControl();
 
-                LauncherControl();
+            LauncherControl();
 
-//                ExtendControl();
+            ExtendControl();
 
-                IN_N_OUT_Control();
+            IN_N_OUT_Control();
 
-                LinearSlideControl();
+            LinearSlideControl();
 
-                Door();
+            Door();
 
-                TelemetryUpdate(Speed);
+            TelemetryUpdate(Speed);
 
 
-
-            }
-        } catch (Throwable t) {
-            RobotLog.setGlobalErrorMsg(getStackTraceAsString(t));
         }
     }
 
@@ -109,9 +102,9 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
                 Outtake_left.setPosition(0.5);
                 Outtake_right.setPosition(0.52);
 
-                OutDoor.setPosition(0.1);
-            } else {
                 OutDoor.setPosition(0.4);
+            } else {
+                OutDoor.setPosition(0.1);
             }
             Ydepressed = false;
         }
@@ -165,7 +158,7 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
             IntakeTimer.reset();
         }
 
-   }
+    }
 
     void LauncherControl() {
         if (gamepad2.x == false) {
@@ -215,17 +208,16 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
 //            Intake1.setPosition(.54);
 //            Intake2.setPosition(.54);
 
-            OutDoor.setPosition(0.1);
+            OutDoor.setPosition(0.4);
             Outtake_left.setPosition(0.75);
             Outtake_right.setPosition(0.28);
         }
 
         if (gamepad2.right_bumper) {
             //Horizontal
-            Outtake_left.setPosition(0.86);
-            Outtake_right.setPosition(0.14);
-
-            OutDoor.setPosition(0.4);
+            Outtake_left.setPosition(0.97);
+            Outtake_right.setPosition(0.03);
+            OutDoor.setPosition(0.1);
         }
 
         proposedBackPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getBackRGB()));
@@ -254,12 +246,12 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
         //these two servos only operate between 0.15 and 0.85. Giving them a value outside that
         // range will cause them to stutter and glitch out
         if (gamepad2.dpad_right) {
-            extend_left.setPosition(.435);
-            extend_right.setPosition(.45);
+            extend_left.setPosition(.825);
+            extend_right.setPosition(.825);
         }
         if (gamepad2.dpad_left) {
-            extend_left.setPosition(0.485);
-            extend_right.setPosition(0.5);
+            extend_left.setPosition(0.2);
+            extend_right.setPosition(0.215);
         }
     }
 
