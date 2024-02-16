@@ -9,6 +9,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.src.Subsystems.LED.Location;
@@ -95,8 +96,10 @@ public class B_Far extends OpmodeTemplate_Auto {
 
             Outtake_left.setPosition(0.9);//0.86
             Outtake_right.setPosition(0.1);//0.14
+            extend_left.setPosition(.825);
+            extend_right.setPosition(.825);
             plane_rotate.setPosition(0);
-            Launcher.setPosition(0.34);
+            Launcher.setPosition(0.425);
             OutDoor.setPosition(0.4);
 
 
@@ -114,6 +117,7 @@ public class B_Far extends OpmodeTemplate_Auto {
             telemetry.addData("RectArea: ", myPipeline.getRectArea());
             telemetry.addData("MidPoint", myPipeline.getRectMidpointX());
             telemetry.addData("lcr", lcr);
+            telemetry.addData("IN_N_OUT",IN_N_OUT.getPower());
             telemetry.update();
         }
 
@@ -124,26 +128,30 @@ public class B_Far extends OpmodeTemplate_Auto {
             case UNKNOWN:
             case RIGHT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .lineToConstantHeading(new Vector2d(-48, 9))
+                        .lineToConstantHeading(new Vector2d(-48, 10))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .waitSeconds(1.5)
                         .build();
                 TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
                         .addDisplacementMarker(() -> {
-                            IN_N_OUT.setPower(.5);
+//                            for (double i = 0.42; IN_N_OUT.getCurrent(CurrentUnit.AMPS) >= 2.5
+//                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.1) {
+//                                IN_N_OUT.setPower(i);
+//                            }
+                            IN_N_OUT.setPower(-0.385);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
-                        .lineToLinearHeading(new Pose2d(-52, -3, Math.toRadians(98)))
+                        .lineToLinearHeading(new Pose2d(-52, -3, Math.toRadians(96)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .back(65)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
-                        .lineToConstantHeading(new Vector2d(-29, -88))
+                        .lineToConstantHeading(new Vector2d(-27.5, -88))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .addDisplacementMarker(() -> {
                             Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
@@ -151,7 +159,7 @@ public class B_Far extends OpmodeTemplate_Auto {
                         })
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
-                        .back(3)
+                        .back(5)
                         .addDisplacementMarker(() -> {
                             Outtake_left.setPosition(0.75);
                             Outtake_right.setPosition(0.25);
@@ -195,9 +203,13 @@ public class B_Far extends OpmodeTemplate_Auto {
                         .build();
                 TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
                         .addDisplacementMarker(() -> {
-                            IN_N_OUT.setPower(.48);
+//                            for (double i = 0.42; IN_N_OUT.getCurrent(CurrentUnit.AMPS) >= 2.5
+//                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
+//                                IN_N_OUT.setPower(i);
+//                            }
+                            IN_N_OUT.setPower(-0.385);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
                         .addDisplacementMarker(() -> {
@@ -216,7 +228,7 @@ public class B_Far extends OpmodeTemplate_Auto {
                         })
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
-                        .back(3)
+                        .back(5)
                         .addDisplacementMarker(() -> {
                             Outtake_left.setPosition(0.75);
                             Outtake_right.setPosition(0.25);
@@ -261,20 +273,24 @@ public class B_Far extends OpmodeTemplate_Auto {
                         .build();
                 TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
                         .addDisplacementMarker(() -> {
-                            IN_N_OUT.setPower(.47);
+//                            for (double i = 0.42; IN_N_OUT.getCurrent(CurrentUnit.AMPS) >= 2.5
+//                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
+//                                IN_N_OUT.setPower(i);
+//                            }
+                            IN_N_OUT.setPower(-0.385);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
                         })
-                        .lineToLinearHeading(new Pose2d(-51, 3, Math.toRadians(93)))
+                        .lineToLinearHeading(new Pose2d(-51, 3, Math.toRadians(92)))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .back(65)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Middle.end())
-                        .lineToConstantHeading(new Vector2d(-19, -88))
+                        .lineToConstantHeading(new Vector2d(-17.7, -88))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .addDisplacementMarker(() -> {
                             Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
@@ -282,7 +298,7 @@ public class B_Far extends OpmodeTemplate_Auto {
                         })
                         .build();
                 TrajectorySequence Score1 = drive.trajectorySequenceBuilder(To_BackBoard.end())
-                        .back(7)
+                        .back(5)
                         .addDisplacementMarker(() -> {
                             Outtake_left.setPosition(0.75);
                             Outtake_right.setPosition(0.25);

@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.src.Subsystems.LED.Location;
@@ -97,8 +98,10 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
             Outtake_left.setPosition(0.9);
             Outtake_right.setPosition(0.1);
             plane_rotate.setPosition(0);
-            Launcher.setPosition(0.34);
+            Launcher.setPosition(0.425);
             OutDoor.setPosition(0.4);
+            extend_left.setPosition(.825);
+            extend_right.setPosition(.825);
 
             if (myPipeline.getRectMidpointX() > 200 && myPipeline.getRectArea() > 1000) {
                 lcr = Location.RIGHT;
@@ -123,22 +126,26 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
             case RIGHT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .back(3)
-                        .splineTo(new Vector2d(-30, 20), Math.toRadians(90))
+                        .splineTo(new Vector2d(-30, 21), Math.toRadians(90))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .waitSeconds(1.5)
                         .build();
                 TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
                         .addDisplacementMarker(() -> {
-                            IN_N_OUT.setPower(0.45);
+//                            for (double i = 0.42; IN_N_OUT.getCurrent(CurrentUnit.AMPS) >= 2.5
+//                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.25) {
+//                                IN_N_OUT.setPower(i);
+//                            }
+                            IN_N_OUT.setPower(-0.385);
                         })
-                        .waitSeconds(2.5)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Drop.end())
                         .lineToConstantHeading(new Vector2d(-22, 35))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(42, 42, 14.96))
                         .addDisplacementMarker(() -> {
-                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH);
-                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH);
+                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
                         })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);
@@ -194,12 +201,16 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
                         .build();
                 TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
                         .addDisplacementMarker(() -> {
-                            IN_N_OUT.setPower(0.48);
+//                            for (double i = 0.42; IN_N_OUT.getCurrent(CurrentUnit.AMPS) >= 2.5
+//                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
+//                                IN_N_OUT.setPower(i);
+//                            }
+                            IN_N_OUT.setPower(-0.4);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Drop.end())
-                        .lineToConstantHeading(new Vector2d(-28, 35))
+                        .lineToConstantHeading(new Vector2d(-27, 35))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .addDisplacementMarker(() -> {
                             Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
@@ -249,23 +260,27 @@ public class R_Close_Corner extends OpmodeTemplate_Auto {
             }
             case LEFT: {
                 TrajectorySequence To_Marker = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
-                        .lineToConstantHeading(new Vector2d(-32, 2.5))
+                        .lineToConstantHeading(new Vector2d(-30, 2.5))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .turn(Math.toRadians(-95))
                         .waitSeconds(1.5)
                         .build();
                 TrajectorySequence Drop = drive.trajectorySequenceBuilder(To_Marker.end())
                         .addDisplacementMarker(() -> {
-                            IN_N_OUT.setPower(.5);
+//                            for (double i = 0.42; IN_N_OUT.getCurrent(CurrentUnit.AMPS) >= 2.5
+//                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
+//                                IN_N_OUT.setPower(i);
+//                            }
+                            IN_N_OUT.setPower(-0.385);
                         })
-                        .waitSeconds(3)
+                        .waitSeconds(5)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Drop.end())
                         .lineToConstantHeading(new Vector2d(-34.5, 35))
                         .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(40, 40, 14.96))
                         .addDisplacementMarker(() -> {
-                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH);
-                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH);
+                            Slide_left.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
+                            Slide_right.setTargetLevel(HeightLevel.HIGH_HIGH_HIGH);
                         })
                         .addDisplacementMarker(() -> {
                             IN_N_OUT.setPower(0);

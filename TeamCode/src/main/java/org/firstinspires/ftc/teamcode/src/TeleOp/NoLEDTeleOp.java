@@ -150,7 +150,7 @@ public class NoLEDTeleOp extends GenericOpmoodeTemplate {
         }
         if (gamepad2.x && Xdepresssed) {
             if (plane_rotate.getPosition() < 0.05) {
-                plane_rotate.setPosition(0.075);
+                plane_rotate.setPosition(0.09);//0.075
             } else {
                 plane_rotate.setPosition(0);
             }
