@@ -33,6 +33,8 @@ public class ColorTest extends GenericOpmoodeTemplate {
 
         while (!isStarted() && !isStopRequested()) {
 
+            defaultInit();
+
         }
 
         while(opModeIsActive()){
@@ -53,6 +55,7 @@ public class ColorTest extends GenericOpmoodeTemplate {
                     CenterStageGameObject.identify(getBackRGB())));
             telemetry.addData("LEDFrontColor", CenterStageGameObject.getLEDColorFromItem(
                     CenterStageGameObject.identify(getFrontRGB())));
+            telemetry.update();
 
         }
     }

@@ -5,10 +5,10 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.src.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.src.Subsystems.LED.Location;
@@ -55,6 +55,8 @@ public class B_Close_Corner extends OpmodeTemplate_Auto {
         Slide_right.reverseMotor();
 
         defaultInit();
+
+        leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
 
         // OpenCV webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -137,9 +139,9 @@ public class B_Close_Corner extends OpmodeTemplate_Auto {
 //                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
 //                                IN_N_OUT.setPower(i);
 //                            }
-                            IN_N_OUT.setPower(-0.35);
+                            IN_N_OUT.setPower(-0.29);
                         })
-                        .waitSeconds(5)
+                        .waitSeconds(3)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Drop.end())
                         .lineToConstantHeading(new Vector2d(-21, -35))
@@ -205,9 +207,9 @@ public class B_Close_Corner extends OpmodeTemplate_Auto {
 //                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
 //                                IN_N_OUT.setPower(i);
 //                            }
-                            IN_N_OUT.setPower(-0.35);
+                            IN_N_OUT.setPower(-0.29);
                         })
-                        .waitSeconds(5)
+                        .waitSeconds(3)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Drop.end())
                         .lineToConstantHeading(new Vector2d(-25, -35))
@@ -271,9 +273,9 @@ public class B_Close_Corner extends OpmodeTemplate_Auto {
 //                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
 //                                IN_N_OUT.setPower(i);
 //                            }
-                            IN_N_OUT.setPower(-0.35);
+                            IN_N_OUT.setPower(-0.29);
                         })
-                        .waitSeconds(5)
+                        .waitSeconds(3)
                         .build();
                 TrajectorySequence To_BackBoard = drive.trajectorySequenceBuilder(Drop.end())
                         .lineToConstantHeading(new Vector2d(-31, -35))

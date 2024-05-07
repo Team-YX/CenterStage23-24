@@ -10,11 +10,11 @@ public enum CenterStageGameObject {
     EMPTY;
 
     //TODO fill out these rgb values
-    private static final double[] GreenPixelRGB = new double[]{0, 0, 0};
-    private static final double[] YellowPixelRGB = new double[]{0, 0, 0};
-    private static final double[] PurplePixelRGB = new double[]{0, 0, 0};
-    private static final double[] WhitePixelRGB = new double[]{0, 0, 0};
-    private static final double[] EmptyRGB = new double[]{0, 0, 0};
+    private static final double[] GreenPixelRGB = new double[]{130, 480, 180};
+    private static final double[] YellowPixelRGB = new double[]{330, 735, 190};
+    private static final double[] PurplePixelRGB = new double[]{370, 630, 550};
+    private static final double[] WhitePixelRGB = new double[]{730, 1500, 1250};
+    private static final double[] EmptyRGB = new double[]{40, 70, 63};
 
     private static final CenterStageGameObject[] gameObjectArray = CenterStageGameObject.values();
 
@@ -30,10 +30,10 @@ public enum CenterStageGameObject {
     public static RevBlinkinLedDriver.BlinkinPattern getLEDColorFromItem(final CenterStageGameObject item) {
         switch (item) {
             case GREEN_PIXEL:
-                return RevBlinkinLedDriver.BlinkinPattern.LAWN_GREEN;
+                return RevBlinkinLedDriver.BlinkinPattern.GREEN;
 
             case YELLOW_PIXEL:
-                return RevBlinkinLedDriver.BlinkinPattern.GOLD;
+                return RevBlinkinLedDriver.BlinkinPattern.YELLOW;
 
             case PURPLE_PIXEL:
                 return RevBlinkinLedDriver.BlinkinPattern.VIOLET;

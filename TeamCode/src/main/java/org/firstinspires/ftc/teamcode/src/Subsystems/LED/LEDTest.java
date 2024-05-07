@@ -10,10 +10,13 @@ public class LEDTest extends GenericOpmoodeTemplate {
 
     public void runOpMode() throws InterruptedException {
 
+        defaultInit();
+
         leds.setPattern(BlinkinPattern.RED);
 
         waitForStart();
         while (opModeIsActive()) {
+            leds.setPattern(BlinkinPattern.RED);
 
         }
     }

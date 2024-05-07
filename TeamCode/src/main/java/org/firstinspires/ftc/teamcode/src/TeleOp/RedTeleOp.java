@@ -22,6 +22,7 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
     }
 
     private final ElapsedTime IntakeTimer = new ElapsedTime();
+    private final ElapsedTime LEDTimer = new ElapsedTime();
 
     protected BlinkinPattern defaultColor;
     protected BlinkinPattern currentBackPattern;
@@ -38,6 +39,7 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
     boolean Ydepressed = true;
     boolean Xdepresssed = true;
     boolean BackDepressed = true;
+    boolean rbumpdepresesd = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,9 +47,9 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
         double Speed = 1;
         defaultInit();
 
-        Outtake_left.setPosition(0.97);
-        Outtake_right.setPosition(0.03);
-        OutDoor.setPosition(0.4);
+        Outtake_left.setPosition(.86);
+        Outtake_right.setPosition(0.14);
+        OutDoor.setPosition(0.3);
 //                Intake1.setPosition(0.83);
 //                Intake2.setPosition(0.83);
         extend_left.setPosition(.825);
@@ -66,9 +68,9 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
 
             gamepadControlDriveTrain(Speed);
 
-//                IntakeControl();
+//            IntakeControl();
 
-//                OuttakeControl();
+            OuttakeControl();
 
             LauncherControl();
 
@@ -79,6 +81,8 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
             LinearSlideControl();
 
             Door();
+
+            LEDControl();
 
             TelemetryUpdate(Speed);
 
@@ -100,11 +104,11 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
         if (gamepad2.y && Ydepressed) {
             if (Outtake_left.getPosition() > 0.6) {
                 Outtake_left.setPosition(0.5);
-                Outtake_right.setPosition(0.52);
+                Outtake_right.setPosition(0.5);
 
-                OutDoor.setPosition(0.4);
+                OutDoor.setPosition(0.3);
             } else {
-                OutDoor.setPosition(0.1);
+                OutDoor.setPosition(0.0);
             }
             Ydepressed = false;
         }
@@ -128,8 +132,8 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
             IN_N_OUT.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
 
             if (gamepad2.right_trigger > gamepad2.left_trigger && gamepad2.b) {
-                OutDoor.setPosition(0.4);
-                Outtake_left.setPosition(0.86);
+                OutDoor.setPosition(0.0);
+                Outtake_left.setPosition(.86);
                 Outtake_right.setPosition(0.14);
 
                 sleep(75);
@@ -178,7 +182,7 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
         }
         if (gamepad2.back && BackDepressed) {
             if (Launcher.getPosition() < 0.5) {
-                Launcher.setPosition(0.6);
+                Launcher.setPosition(1);
             } else {
                 Launcher.setPosition(0.425);
             }
@@ -204,41 +208,42 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
 //            Outtake_right.setPosition(0.52);
 //        }
         if (gamepad2.a) {
-            //Middle
-//            Intake1.setPosition(.54);
-//            Intake2.setPosition(.54);
-
-            OutDoor.setPosition(0.4);
-            Outtake_left.setPosition(0.75);
-            Outtake_right.setPosition(0.28);
+            OutDoor.setPosition(0.3);
+            Outtake_left.setPosition(0.77);
+            Outtake_right.setPosition(0.23);
         }
 
-        if (gamepad2.right_bumper) {
-            //Horizontal
-            Outtake_left.setPosition(0.97);
-            Outtake_right.setPosition(0.03);
-            OutDoor.setPosition(0.1);
+        if (gamepad2.y == false) {
+            Ydepressed = true;
+        }
+        if (gamepad2.y && Ydepressed) {
+            if (Outtake_left.getPosition() > 0.6) {
+                Outtake_left.setPosition(0.5);
+                Outtake_right.setPosition(0.5);
+
+                OutDoor.setPosition(0.3);
+            } else {
+                OutDoor.setPosition(0.0);
+            }
+            Ydepressed = false;
         }
 
-        proposedBackPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getBackRGB()));
-        proposedFrontPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getFrontRGB()));
-
-        if (proposedBackPattern != null && proposedBackPattern != currentBackPattern) {
-            IntakeTimer.reset();
-            currentBackPattern = proposedBackPattern;
-            leds.setPattern(currentBackPattern);
-        } else if (proposedBackPattern == null) {
-            currentBackPattern = defaultColor;
-            leds.setPattern(currentBackPattern);
+        if (gamepad2.right_bumper == false) {
+            rbumpdepresesd = true;
+        }
+        if (gamepad2.right_bumper && rbumpdepresesd) {
+            if (OutDoor.getPosition() < .2) {
+                //Horizontal
+                Outtake_left.setPosition(.86);
+                Outtake_right.setPosition(0.14);
+                OutDoor.setPosition(0.3);
+            } else {
+                OutDoor.setPosition(0.0);
+            }
+            rbumpdepresesd = false;
         }
 
-        if (proposedFrontPattern != null && proposedFrontPattern != currentFrontPattern) {
-            currentFrontPattern = proposedFrontPattern;
-            leds.setPattern(currentFrontPattern);
-        } else if (proposedFrontPattern == null) {
-            currentFrontPattern = defaultColor;
-            leds.setPattern(currentFrontPattern);
-        }
+
     }
 
 
@@ -250,8 +255,36 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
             extend_right.setPosition(.825);
         }
         if (gamepad2.dpad_left) {
-            extend_left.setPosition(0.2);
-            extend_right.setPosition(0.215);
+            extend_left.setPosition(0.55);
+            extend_right.setPosition(0.55);
+        }
+    }
+
+    void LEDControl() {
+
+        proposedBackPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getBackRGB()));
+        proposedFrontPattern = CenterStageGameObject.getLEDColorFromItem(CenterStageGameObject.identify(getFrontRGB()));
+
+        if (LEDTimer.seconds() > 0 && LEDTimer.seconds() < 1) {
+            if (proposedBackPattern != null) {
+                currentBackPattern = proposedBackPattern;
+                leds.setPattern(currentBackPattern);
+            } else if (proposedBackPattern == null) {
+                currentBackPattern = defaultColor;
+                leds.setPattern(currentBackPattern);
+            }
+        }
+        if (LEDTimer.seconds() > 1.1 && LEDTimer.seconds() < 2) {
+            if (proposedFrontPattern != null) {
+                currentFrontPattern = proposedFrontPattern;
+                leds.setPattern(currentFrontPattern);
+            } else if (proposedFrontPattern == null) {
+                currentFrontPattern = defaultColor;
+                leds.setPattern(currentFrontPattern);
+            }
+        }
+        if (LEDTimer.seconds() > 2.1) {
+            LEDTimer.reset();
         }
     }
 
@@ -278,6 +311,7 @@ public class RedTeleOp extends GenericOpmoodeTemplate {
 //      telemetry.addData("Distance1", dsensor1.getDistance(DistanceUnit.INCH));
 //      telemetry.addData("Distance2", dsensor2.getDistance(DistanceUnit.INCH));
         telemetry.addData("Speed", Speed);
+        telemetry.addData("LEDtime", LEDTimer.seconds());
         telemetry.update();
     }
 }

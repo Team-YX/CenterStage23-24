@@ -8,17 +8,15 @@ import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-
 
 
 public abstract class OpmodeTemplate_Auto extends LinearOpMode {
 
 
     IMU imu;
-//    protected Servo Intake1;
+    //    protected Servo Intake1;
 //    protected Servo Intake2;
     protected Servo Launcher;
     protected Servo plane_rotate;
@@ -35,7 +33,7 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
     protected DcMotorEx IN_N_OUT;
     protected ColorRangeSensor back_color;
     protected ColorRangeSensor front_color;
-//    protected RevBlinkinLedDriver leds;
+    protected RevBlinkinLedDriver leds;
 
     public void defaultInit() {
 
@@ -55,7 +53,7 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         plane_rotate = hardwareMap.get(Servo.class, "rotator");
         Launcher = hardwareMap.get(Servo.class, "Launcher");
         OutDoor = hardwareMap.get(Servo.class, "OutDoor");
-        InDoor = hardwareMap.get(CRServo.class,"InDoor");
+        InDoor = hardwareMap.get(CRServo.class, "InDoor");
 
 //      DistanceSensor dsensor2 = hardwareMap.get(DistanceSensor.class, "dsensor2");
 //      DistanceSensor dsensor1 = hardwareMap.get(DistanceSensor.class, "dsensor1");
@@ -78,8 +76,8 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         Outtake_left.setDirection(Servo.Direction.REVERSE);
         Outtake_right.setDirection(Servo.Direction.REVERSE);
 
-        extend_right.setDirection(Servo.Direction.FORWARD);
-        extend_left.setDirection(Servo.Direction.REVERSE);
+        extend_right.setDirection(Servo.Direction.REVERSE);
+        extend_left.setDirection(Servo.Direction.FORWARD);
 
         plane_rotate.setDirection(Servo.Direction.FORWARD);
         Launcher.setDirection(Servo.Direction.REVERSE);
@@ -89,7 +87,7 @@ public abstract class OpmodeTemplate_Auto extends LinearOpMode {
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-//        leds = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
+        leds = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
     }
 
 

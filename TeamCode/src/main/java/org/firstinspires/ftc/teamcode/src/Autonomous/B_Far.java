@@ -57,6 +57,8 @@ public class B_Far extends OpmodeTemplate_Auto {
         Slide_right.reverseMotor();
         defaultInit();
 
+        leds.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+
         // OpenCV webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -138,9 +140,9 @@ public class B_Far extends OpmodeTemplate_Auto {
 //                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.1) {
 //                                IN_N_OUT.setPower(i);
 //                            }
-                            IN_N_OUT.setPower(-0.385);
+                            IN_N_OUT.setPower(-0.30);
                         })
-                        .waitSeconds(5)
+                        .waitSeconds(9)
                         .build();
                 TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
                         .addDisplacementMarker(() -> {
@@ -207,9 +209,9 @@ public class B_Far extends OpmodeTemplate_Auto {
 //                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
 //                                IN_N_OUT.setPower(i);
 //                            }
-                            IN_N_OUT.setPower(-0.385);
+                            IN_N_OUT.setPower(-0.30);
                         })
-                        .waitSeconds(5)
+                        .waitSeconds(9)
                         .build();
                 TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
                         .addDisplacementMarker(() -> {
@@ -277,9 +279,9 @@ public class B_Far extends OpmodeTemplate_Auto {
 //                                    || IN_N_OUT.getCurrent(CurrentUnit.AMPS) <= 0.3; i += 0.2) {
 //                                IN_N_OUT.setPower(i);
 //                            }
-                            IN_N_OUT.setPower(-0.385);
+                            IN_N_OUT.setPower(-0.30);
                         })
-                        .waitSeconds(5)
+                        .waitSeconds(9)
                         .build();
                 TrajectorySequence Middle = drive.trajectorySequenceBuilder(Drop.end())
                         .addDisplacementMarker(() -> {
